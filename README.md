@@ -49,3 +49,13 @@ bun run index.ts
 ```
 
 This project was created using `bun init` in bun v1.0.6. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+
+
+## Credits
+
+This project was inspired by: 
+
+- [zabirauf/AutoGPT.js](https://github.com/zabirauf/AutoGPT.js/tree/main)
+- [yoheinakajima/babyagi](https://github.com/yoheinakajima/babyagi)
+- [Significant-Gravitas/AutoGPT](https://github.com/Significant-Gravitas/AutoGPT)
+- [smol-ai/developer](https://github.com/smol-ai/developer)
