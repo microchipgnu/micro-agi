@@ -1,3 +1,3 @@
-import { autoGPT } from "./utils/chat-loop";
+import { chatLoop } from "./utils/chat-loop";
 
-autoGPT().catch(console.error);
+chatLoop().catch(console.error);

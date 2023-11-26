@@ -22,7 +22,7 @@ const generateId = () => {
   );
 };
 
-async function autoGPT() {
+async function chatLoop() {
   let fullMessageHistory: LLMMessage[] = [];
   let userInput: string = USER_INPUT;
   let isChatInProgress: boolean = false;
@@ -179,4 +179,4 @@ async function autoGPT() {
   }
 }
 
-export { autoGPT };
+export { chatLoop };
