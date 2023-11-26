@@ -18,17 +18,21 @@ micro-agi aims to provide a straightforward and effective solution for developer
 - **Non-persistent Web Browsing:** Offers a stateless method for accessing web content, where visits to URLs are conducted without retaining any session information, done through server-proxied requests to ensure privacy and security.
 
 
-### Future Plans / Ideas
-
+### Future Plans
 - Wait for LM Studio support Function Calls
 - Integrate Agent Protocol
 - Dockerize
-- Ink CLI (?)
 - Websocket server that streams events
 - State manager
+
+### Ideas
+- Ink CLI (?)
 - Integration with e2b for agent deployment (?)
 - BentoLM integration for LLM cloud deployment (?)
 - Web-browsing with Puppeteer (?)
+- Support local vector embeddings (memgpt?) (?)
+- Support interaction with OpenAI / other plugins (?)
+
 
 ## How to 
 
