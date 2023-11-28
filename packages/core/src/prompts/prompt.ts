@@ -1,4 +1,4 @@
-import { InternalPlugins } from "../internal-plugins";
+import { InternalPlugins } from "@micro-agi/plugins";
 import { ResponseSchema } from "../types/llm.types";
 
 

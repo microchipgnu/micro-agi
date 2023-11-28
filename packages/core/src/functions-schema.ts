@@ -1,4 +1,4 @@
-import { InternalPlugins } from "../src/internal-plugins";
+import { InternalPlugins } from "@micro-agi/plugins";
 import { CallLLMChatCompletionArgs } from "./types/llm.types";
 
 let functionSchema: CallLLMChatCompletionArgs["functions"];

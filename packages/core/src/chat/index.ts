@@ -1,6 +1,6 @@
-import { callLLMChatCompletion } from "../llm/utils";
+import { callLLMChatCompletion } from "../llm";
 import { countMessageTokens } from "../token-counters/simple";
-import { ChatWithAiArgs } from "../types/chat";
+import { ChatWithAiArgs } from "../types/chat.types";
 import {
   CallLLMChatCompletionResponse,
   CallLLMChatCompletionResponseStatus,

@@ -1,8 +1,5 @@
-
-import { BrowserFileOperations } from "../file-operations/browser";
-import { NodeFileOperations } from "../file-operations/node";
-import { CommandPlugin } from "../types/command-plugins.types";
-import { FileOperations } from "../types/file-operations.types";
+import { BrowserFileOperations, NodeFileOperations } from "@micro-agi/core";
+import type { CommandPlugin, FileOperations } from "@micro-agi/core";
 
 let fileOperations: FileOperations;
 

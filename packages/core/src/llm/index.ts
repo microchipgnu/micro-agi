@@ -47,9 +47,7 @@ export async function callLLMChatCompletion({
   }
 
   const resBody = await response.json();
-
-  console.log(JSON.stringify(resBody));
-
+  
   return {
     status: CallLLMChatCompletionResponseStatus.Success,
     content: resBody.choices[0].message.content as string,

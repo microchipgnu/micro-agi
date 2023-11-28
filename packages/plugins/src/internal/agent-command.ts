@@ -1,18 +1,14 @@
-import { getConfig } from "../config";
-import { callLLMChatCompletion } from "../llm/utils";
-import { CommandPlugin } from "../types/command-plugins.types";
 import {
+  getConfig,
+  callLLMChatCompletion,
   CallLLMChatCompletionResponseStatus,
+} from "@micro-agi/core";
+import type {
+  CommandPlugin,
   LLMMessage,
   LLMModel,
-} from "../types/llm.types";
-
-interface Agent {
-  name: string;
-  task: string;
-  messages: LLMMessage[];
-  model: LLMModel;
-}
+  Agent,
+} from "@micro-agi/core";
 
 let nextkey = 0;
 const agents: { [key: string]: Agent } = {};

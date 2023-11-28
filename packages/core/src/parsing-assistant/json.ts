@@ -1,5 +1,5 @@
 import { getConfig } from "../config";
-import { callAIFunction } from "../llm/utils";
+import { callAIFunction } from "../llm";
 import { JSON_SCHEMA } from "../prompts/prompt";
 
 

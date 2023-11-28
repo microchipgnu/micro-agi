@@ -1,12 +1,11 @@
-import AgentCommandPlugins from './agent-command-plugins';
-import BrowserCommandPlugins from './browser-command-plugins';
-import CodeGenerationCommandPlugin from './code-generation-plugins';
-import FileOperationCommandPlugins from './file-operation-command-plugins';
-import MemoryCommandPlugins from './memory-command-plugins';
-import TaskCompleteCommandPlugins from './task-complete-command-plugins';
-import { ResponseSchema } from '../types/llm.types';
-import { fixAndParseJson } from '../parsing-assistant/json';
-import { fixAndParseYAML } from '../parsing-assistant/yaml';
+import AgentCommandPlugins from "./agent-command.ts";
+import BrowserCommandPlugins from "./browser-command.ts";
+import CodeGenerationCommandPlugin from "./code-generation";
+import FileOperationCommandPlugins from "./file-operation-command";
+import MemoryCommandPlugins from "./memory-command";
+import TaskCompleteCommandPlugins from "./task-complete-command";
+import type { ResponseSchema } from "@micro-agi/core";
+import { fixAndParseJson, fixAndParseYAML } from "@micro-agi/core";
 
 export const InternalPlugins = [
   ...MemoryCommandPlugins,

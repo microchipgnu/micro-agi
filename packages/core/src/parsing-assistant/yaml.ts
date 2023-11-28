@@ -1,6 +1,6 @@
 import { parse as parseYAML } from "yaml";
 import { getConfig } from "../config";
-import { callAIFunction } from "../llm/utils";
+import { callAIFunction } from "../llm";
 import { YAML_SCHEMA } from "../prompts/prompt";
 
 export async function fixAndParseYAML(

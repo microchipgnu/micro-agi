@@ -1,4 +1,4 @@
-import { CommandPlugin } from "../types/command-plugins.types";
+import type { CommandPlugin } from "@micro-agi/core";
 
 export const permanentMemory: string[] = [];
 

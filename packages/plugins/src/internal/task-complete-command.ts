@@ -1,4 +1,4 @@
-import { CommandPlugin } from "../types/command-plugins.types";
+import { CommandPlugin } from "@micro-agi/core";
 
 export let taskComplete = false;
 
