@@ -11,12 +11,16 @@ export class BrowserFileOperations implements FileOperations {
   public async getDirectoryHandle(): Promise<FileSystemDirectoryHandle | null> {
     if (!this._directoryHandle) {
       // Logic to get a directory handle, for example, by showing a directory picker
+      // @ts-ignore
+      // TODO: fix
       this._directoryHandle = await window.showDirectoryPicker();
     }
     return this._directoryHandle;
   }
 
   async setDirectoryHandle(): Promise<any> {
+    // @ts-ignore
+    // TODO: fix
     const directoryHandle = await window.showDirectoryPicker();
     this._directoryHandle = directoryHandle;
   }

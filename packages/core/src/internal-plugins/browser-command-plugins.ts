@@ -2,8 +2,8 @@
 import { getConfig } from '../config';
 import { callLLMChatCompletion, CallLLMChatCompletionResponseStatus } from '../llm/utils';
 import { countStringTokens } from '../token-counters/simple';
+import { CommandPlugin } from '../types/command-plugins.types';
 import { LLMModel, LLMMessage } from '../types/llm.types';
-import type { CommandPlugin } from './command-plugins';
 
 let callProxyFn: (
   url: string

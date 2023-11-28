@@ -1,8 +1,8 @@
 
 import { BrowserFileOperations } from "../file-operations/browser";
 import { NodeFileOperations } from "../file-operations/node";
+import { CommandPlugin } from "../types/command-plugins.types";
 import { FileOperations } from "../types/file-operations.types";
-import type { CommandPlugin } from "./command-plugins";
 
 let fileOperations: FileOperations;
 

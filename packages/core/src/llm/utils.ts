@@ -1,41 +1,12 @@
 import { getAPIKey } from "../api-key";
 import { constants } from "../envars";
-import { LLMMessage, LLMModel } from "../types/llm.types";
-
-
-export interface CallLLMChatCompletionArgs {
-  messages: LLMMessage[];
-  model: LLMModel;
-  functions?: {
-    name: string;
-    description: string;
-    parameters: { [key: string]: any };
-  }[];
-  temperature?: number;
-  maxTokens?: number;
-}
-
-export enum CallLLMChatCompletionResponseStatus {
-  Success,
-  Error,
-}
-export interface CallLLMChatCompletionResponseSuccess {
-  status: CallLLMChatCompletionResponseStatus.Success;
-  content: string;
-  functionCall?: {
-    name: string;
-    arguments: { [key: string]: any };
-  };
-}
-
-export interface CallLLMChatCompletionResponseError {
-  status: CallLLMChatCompletionResponseStatus.Error;
-  message: string;
-}
-
-export type CallLLMChatCompletionResponse =
-  | CallLLMChatCompletionResponseSuccess
-  | CallLLMChatCompletionResponseError;
+import {
+  CallAIFunctionArgs,
+  CallLLMChatCompletionArgs,
+  CallLLMChatCompletionResponse,
+  CallLLMChatCompletionResponseStatus,
+  LLMMessage,
+} from "../types/llm.types";
 
 export async function callLLMChatCompletion({
   messages,
@@ -77,7 +48,7 @@ export async function callLLMChatCompletion({
 
   const resBody = await response.json();
 
-  console.log(JSON.stringify(resBody))
+  console.log(JSON.stringify(resBody));
 
   return {
     status: CallLLMChatCompletionResponseStatus.Success,
@@ -91,13 +62,6 @@ export async function callLLMChatCompletion({
         }
       : undefined,
   };
-}
-
-export interface CallAIFunctionArgs {
-  function: string;
-  args: any[];
-  description: string;
-  model: LLMModel;
 }
 
 export async function callAIFunction({

@@ -1,7 +1,5 @@
-
 import { InternalPlugins } from "../src/internal-plugins";
 import { CallLLMChatCompletionArgs } from "./llm/utils";
-
 
 let functionSchema: CallLLMChatCompletionArgs["functions"];
 export function getFunctionSchema(): Exclude<
@@ -16,6 +14,8 @@ export function getFunctionSchema(): Exclude<
         type: "object",
         properties: Object.entries(commandPlugin.argumentsV2.args).reduce(
           (params, [key, arg]) => {
+            // @ts-ignore
+            // TODO: fix
             params[key] = { ...arg };
             return params;
           },

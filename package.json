@@ -5,11 +5,14 @@
     "packages/*"
   ],
   "scripts": {
-    "run:core": "bun run --cwd ./packages/core ./index.ts"
+    "run:core": "bun run --cwd ./packages/core .",
+    "run:agent": "bun run --cwd ./packages/agent ."
   },
   "devDependencies": {
     "@types/node-localstorage": "^1.3.3",
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "@micro-agi/core": "workspace:*",
+    "@micro-agi/agent": "workspace:*"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

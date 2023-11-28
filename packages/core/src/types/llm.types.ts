@@ -1,3 +1,45 @@
+export interface CallAIFunctionArgs {
+  function: string;
+  args: any[];
+  description: string;
+  model: LLMModel;
+}
+
+export interface CallLLMChatCompletionArgs {
+  messages: LLMMessage[];
+  model: LLMModel;
+  functions?: {
+    name: string;
+    description: string;
+    parameters: { [key: string]: any };
+  }[];
+  temperature?: number;
+  maxTokens?: number;
+}
+
+export enum CallLLMChatCompletionResponseStatus {
+  Success,
+  Error,
+}
+export interface CallLLMChatCompletionResponseSuccess {
+  status: CallLLMChatCompletionResponseStatus.Success;
+  content: string;
+  functionCall?: {
+    name: string;
+    arguments: { [key: string]: any };
+  };
+}
+
+export interface CallLLMChatCompletionResponseError {
+  status: CallLLMChatCompletionResponseStatus.Error;
+  message: string;
+}
+
+export type CallLLMChatCompletionResponse =
+  | CallLLMChatCompletionResponseSuccess
+  | CallLLMChatCompletionResponseError;
+
+
 export interface AIResponseSchema {
     command: {
       name: string;

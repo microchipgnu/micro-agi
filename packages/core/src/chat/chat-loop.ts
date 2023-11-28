@@ -1,11 +1,16 @@
 import { Activity } from "../types/activity.types";
-import { AIResponseSchema, LLMMessage } from "../types/llm.types";
+import {
+  AIResponseSchema,
+  CallLLMChatCompletionResponse,
+  CallLLMChatCompletionResponseStatus,
+  LLMMessage,
+} from "../types/llm.types";
 import { chatWithAI } from ".";
 
 import { executeCommand } from "../internal-plugins";
 import { permanentMemory } from "../internal-plugins/memory-command-plugins";
 import { addThoughtArgsToSchema, getFunctionSchema } from "../functions-schema";
-import { CallLLMChatCompletionResponse, CallLLMChatCompletionResponseStatus } from "../llm/utils";
+
 import { generatePrompt } from "../prompts/prompt";
 
 let USER_INPUT = "Determine which function to call.";
