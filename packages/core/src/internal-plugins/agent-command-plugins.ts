@@ -1,9 +1,11 @@
-
-import { getConfig } from '../config';
-import { callLLMChatCompletion, CallLLMChatCompletionResponseStatus } from '../llm/utils';
-import { CommandPlugin } from '../types/command-plugins.types';
-import { LLMMessage, LLMModel } from '../types/llm.types';
-
+import { getConfig } from "../config";
+import { callLLMChatCompletion } from "../llm/utils";
+import { CommandPlugin } from "../types/command-plugins.types";
+import {
+  CallLLMChatCompletionResponseStatus,
+  LLMMessage,
+  LLMModel,
+} from "../types/llm.types";
 
 interface Agent {
   name: string;
@@ -23,12 +25,7 @@ async function startAgent(
   model: LLMModel
 ) {
   const firstMessage = `You are ${name}. Respond with: "Acknowledged".`;
-  const { key } = await createAgent(
-    name,
-    task,
-    firstMessage,
-    model
-  );
+  const { key } = await createAgent(name, task, firstMessage, model);
 
   const agentResponse = await messageAgent(key, prompt, context);
 
@@ -89,8 +86,16 @@ async function messageAgent(
 
   const agentReply = await callLLMChatCompletion({ messages, model });
 
-  messages.push({ role: "assistant", content: agentReply.status === CallLLMChatCompletionResponseStatus.Success ? agentReply.content : "error" });
-  return agentReply.status === CallLLMChatCompletionResponseStatus.Success ? agentReply.content : "error";
+  messages.push({
+    role: "assistant",
+    content:
+      agentReply.status === CallLLMChatCompletionResponseStatus.Success
+        ? agentReply.content
+        : "error",
+  });
+  return agentReply.status === CallLLMChatCompletionResponseStatus.Success
+    ? agentReply.content
+    : "error";
 }
 
 function listAgents(): [string, string][] {

@@ -1,9 +1,12 @@
-
-import { getConfig } from '../config';
-import { callLLMChatCompletion, CallLLMChatCompletionResponseStatus } from '../llm/utils';
-import { countStringTokens } from '../token-counters/simple';
-import { CommandPlugin } from '../types/command-plugins.types';
-import { LLMModel, LLMMessage } from '../types/llm.types';
+import { getConfig } from "../config";
+import { callLLMChatCompletion } from "../llm/utils";
+import { countStringTokens } from "../token-counters/simple";
+import { CommandPlugin } from "../types/command-plugins.types";
+import {
+  LLMModel,
+  LLMMessage,
+  CallLLMChatCompletionResponseStatus,
+} from "../types/llm.types";
 
 let callProxyFn: (
   url: string
@@ -21,7 +24,7 @@ export function initBrowserCommandPlugins({
 
 initBrowserCommandPlugins({
   callProxy,
-})
+});
 
 async function callProxy(
   url: string
@@ -178,7 +181,11 @@ async function summarizeText(text: string, isWebsite = true): Promise<string> {
       maxTokens: 300,
     });
 
-    summaries.push(summary.status === CallLLMChatCompletionResponseStatus.Success ? summary.content : "error");
+    summaries.push(
+      summary.status === CallLLMChatCompletionResponseStatus.Success
+        ? summary.content
+        : "error"
+    );
   }
 
   if (summaries.length === 1) {
@@ -208,7 +215,9 @@ async function summarizeText(text: string, isWebsite = true): Promise<string> {
     model: currentModel,
     maxTokens: 300,
   });
-  return finalSummary.status === CallLLMChatCompletionResponseStatus.Success ? finalSummary.content : "error";
+  return finalSummary.status === CallLLMChatCompletionResponseStatus.Success
+    ? finalSummary.content
+    : "error";
 }
 
 const BrowserCommandPlugins: CommandPlugin[] = [

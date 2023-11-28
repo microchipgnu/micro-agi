@@ -1,8 +1,6 @@
-
-import { getConfig } from '../config';
-import { callAIFunction } from '../llm/utils';import { CommandPlugin } from '../types/command-plugins.types';
-;
-
+import { getConfig } from "../config";
+import { callAIFunction } from "../llm/utils";
+import { CommandPlugin } from "../types/command-plugins.types";
 async function createCode(descriptionOfCode: string): Promise<string> {
   const functionString = "function createCode(description: string): string {";
   const args = [descriptionOfCode];

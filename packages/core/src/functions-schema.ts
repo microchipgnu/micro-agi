@@ -1,5 +1,5 @@
 import { InternalPlugins } from "../src/internal-plugins";
-import { CallLLMChatCompletionArgs } from "./llm/utils";
+import { CallLLMChatCompletionArgs } from "./types/llm.types";
 
 let functionSchema: CallLLMChatCompletionArgs["functions"];
 export function getFunctionSchema(): Exclude<

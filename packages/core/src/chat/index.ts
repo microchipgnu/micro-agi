@@ -1,24 +1,11 @@
 import { callLLMChatCompletion } from "../llm/utils";
 import { countMessageTokens } from "../token-counters/simple";
+import { ChatWithAiArgs } from "../types/chat";
 import {
-  CallLLMChatCompletionArgs,
   CallLLMChatCompletionResponse,
   CallLLMChatCompletionResponseStatus,
   LLMMessage,
-  LLMModel,
 } from "../types/llm.types";
-
-interface ChatWithAiArgs {
-  prompt: string;
-  userInput: string;
-  fullMessageHistory: LLMMessage[];
-  appendToFullMessageHistory: (messages: LLMMessage[]) => void;
-  permanentMemory: string[];
-  tokenLimit: number;
-  model: LLMModel;
-  functions?: CallLLMChatCompletionArgs["functions"];
-  debug?: boolean;
-}
 
 export async function chatWithAI({
   prompt,
