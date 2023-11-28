@@ -1,1 +1,1 @@
-# @micro-agi/agent
+# @micro-agi/plugins
