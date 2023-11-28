@@ -18,14 +18,17 @@ export function countMessageTokens(
     tokensPerMessage = 3;
     tokensPerName = 1;
   } else {
-    // TODO???assert never
-    function assertNever(value: never): never {
-      throw new Error(`Unexpected value: ${value}`);
-    }
-    assertNever(model)
+    tokensPerMessage = 4;
+    tokensPerName = -1;
+    // function assertNever(value: string): string {
+    //   throw new Error(`Unexpected value: ${value}`);
+    // }
+    // assertNever(model)
   }
 
-  const encoding = encoding_for_model(model as TiktokenModel);
+  // TODO: support more models
+  // const encoding = encoding_for_model(model as TiktokenModel);
+  const encoding = encoding_for_model("gpt-4");
   let numTokens = 0;
   for (const message of messages) {
     numTokens += tokensPerMessage;

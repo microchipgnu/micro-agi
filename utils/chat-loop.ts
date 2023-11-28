@@ -1,17 +1,14 @@
-import { chatWithAI } from "./chat";
 import { executeCommand } from "../command-plugins/index";
-import { generatePrompt } from "./prompt-v2";
 import { permanentMemory } from "../command-plugins/memory-command-plugins";
-import type { AIResponseSchema, LLMMessage, LLMModel } from "./types";
-import {
-  addThoughtArgsToSchema,
-  getFunctionSchema,
-} from "./functions-schema";
+import { Activity } from "../types";
+import { chatWithAI } from "./chat";
+import { addThoughtArgsToSchema, getFunctionSchema } from "./functions-schema";
 import {
   CallLLMChatCompletionResponse,
   CallLLMChatCompletionResponseStatus,
 } from "./llm-utils";
-import { Activity } from "../types";
+import { generatePrompt } from "./prompt-v2";
+import type { AIResponseSchema, LLMMessage } from "./types";
 
 let USER_INPUT = "Determine which function to call.";
 
@@ -46,7 +43,7 @@ async function chatLoop() {
     let args: string | { [key: string]: string } = {};
     let rawParsedResponse: AIResponseSchema | undefined = undefined;
 
-    console.log("assistantReply", assistantReply);
+    console.log(assistantReply);
 
     try {
       if (
@@ -159,18 +156,20 @@ async function chatLoop() {
       id: generateId(),
     });
 
+    const prompt = generatePrompt(
+      "MarketTrendGPT",
+      `An AI designed to help businesses make informed decisions`,
+      ["Discover the latest trends in AI"]
+    );
+
     const assistantReply = await chatWithAI({
-      prompt: generatePrompt(
-        "MarketTrendGPT",
-        `An AI designed to help businesses make informed decisions. ALWAYS respond in JSON format. Follow this ${JSON.stringify(addThoughtArgsToSchema(getFunctionSchema()))}`,
-        ["Discover the latest trends in AI"]
-      ),
+      prompt: prompt,
       fullMessageHistory,
       permanentMemory,
-      tokenLimit: 5000,
-      model: "gpt-3.5-turbo",
+      tokenLimit: 4000,
+      model: "gpt-4",
       userInput,
-      debug: false,
+      debug: true,
       appendToFullMessageHistory,
       functions: addThoughtArgsToSchema(getFunctionSchema()),
     });

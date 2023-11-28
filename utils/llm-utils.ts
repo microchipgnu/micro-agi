@@ -1,4 +1,5 @@
-import { getAPIKey } from './api-key';
+import { getAPIKey } from "./api-key";
+import { constants } from "./constants";
 import type { LLMMessage, LLMModel } from "./types";
 
 export interface CallLLMChatCompletionArgs {
@@ -52,12 +53,13 @@ export async function callLLMChatCompletion({
   };
 
   const apiKey = getAPIKey();
+  const inferenceServer = constants.inferenceServer;
   const headers = new Headers();
   headers.set("Authorization", `Bearer ${apiKey}`);
   headers.set("Content-Type", "application/json");
   headers.set("Accept", "application/json");
 
-  const response = await fetch("http://0.0.0.0:42069/v1/chat/completions", {
+  const response = await fetch(`${inferenceServer}/v1/chat/completions`, {
     method: "POST",
     headers,
     body: JSON.stringify(reqBody),
@@ -73,6 +75,8 @@ export async function callLLMChatCompletion({
   }
 
   const resBody = await response.json();
+
+  console.log(JSON.stringify(resBody))
 
   return {
     status: CallLLMChatCompletionResponseStatus.Success,

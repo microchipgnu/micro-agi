@@ -5,6 +5,7 @@ import {
   LocalStorage,
   type LocalStorage as LocalStorageType,
 } from "node-localstorage";
+import { constants } from "../constants";
 
 const canUseDOMLocalStorage =
   typeof window !== "undefined" && window.localStorage;
@@ -29,3 +30,5 @@ export function setAPIKey(apiKey: string): void {
     nodeLocalStorage.setItem(OPENAI_LS_KEY, apiKey);
   }
 }
+
+setAPIKey(constants.openaiKey || "");

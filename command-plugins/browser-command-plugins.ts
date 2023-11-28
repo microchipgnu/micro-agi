@@ -18,6 +18,36 @@ export function initBrowserCommandPlugins({
   callProxyFn = callProxy;
 }
 
+initBrowserCommandPlugins({
+  callProxy,
+})
+
+async function callProxy(
+  url: string
+): Promise<
+  { status: "ok"; text: string } | { status: "error"; error: string }
+> {
+  const proxyAPIUrl = new URL(
+    "/proxy",
+    `${window.location.protocol}//${window.location.host}`
+  );
+  proxyAPIUrl.searchParams.set("url", url);
+  try {
+    const response = await fetch(proxyAPIUrl.toString(), { method: "GET" });
+    if (response.ok) {
+      return { status: "ok", text: await response.text() };
+    } else if (response.status === 520) {
+      const jsonBody = await response.json();
+      return { status: "error", error: `Error: HTTP ${jsonBody.status} error` };
+    } else {
+      return { status: "error", error: "Error: unable to visit website" };
+    }
+  } catch (error) {
+    console.log("Error calling proxy", error);
+    return { status: "error", error: "Error: unable to visit website" };
+  }
+}
+
 async function callProxyAndReturnFromDocument<T>(
   url: string,
   getStringFromDocument: (doc: Document) => T
