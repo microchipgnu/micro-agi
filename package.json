@@ -1,9 +1,11 @@
 {
   "name": "micro-agi",
-  "module": "index.ts",
-  "type": "module",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "docker:build": "docker build -t micro-agi ."
+    "run:core": "bun run --cwd ./packages/core ./index.ts"
   },
   "devDependencies": {
     "@types/node-localstorage": "^1.3.3",
