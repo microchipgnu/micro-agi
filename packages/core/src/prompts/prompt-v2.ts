@@ -1,4 +1,5 @@
-import { CommandPlugins } from '../command-plugins';
+import { InternalPlugins } from "../internal-plugins";
+
 
 const promptStart =
   "Your decisions must always be made independently without seeking user assistance. Play to your strengths as an LLM and pursue simple strategies with no legal complications.";
@@ -14,7 +15,7 @@ export function generatePrompt(
 }
 
 function generateBasePrompt() {
-  const actionsStr = CommandPlugins.map(
+  const actionsStr = InternalPlugins.map(
     (commandPlugin, index) =>
       `${index + 1}. ${commandPlugin.name}: "${commandPlugin.command}"`
   ).join("\n");

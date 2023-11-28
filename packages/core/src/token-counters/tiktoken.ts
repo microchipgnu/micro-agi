@@ -1,6 +1,6 @@
 import { encoding_for_model } from "@dqbd/tiktoken";
-import type { LLMMessage, LLMModel } from "./types";
 import type { TiktokenModel } from "@dqbd/tiktoken";
+import { LLMMessage, LLMModel } from "../types/llm.types";
 
 export function countMessageTokens(
   messages: LLMMessage[],
@@ -20,6 +20,7 @@ export function countMessageTokens(
   } else {
     tokensPerMessage = 4;
     tokensPerName = -1;
+    // TODO: throw error
     // function assertNever(value: string): string {
     //   throw new Error(`Unexpected value: ${value}`);
     // }

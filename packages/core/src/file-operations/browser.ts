@@ -1,7 +1,7 @@
 /// <reference lib="dom" />
 /// <reference lib="dom.iterable" />
 
-import { FileOperations } from "./types";
+import { FileOperations } from "../types/file-operations.types";
 
 export class BrowserFileOperations implements FileOperations {
   // You can still have your private field to store the directory handle if needed

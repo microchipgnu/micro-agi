@@ -1,10 +1,9 @@
-import { getConfig } from '../utils/config';
+
+import { getConfig } from '../config';
+import { callLLMChatCompletion, CallLLMChatCompletionResponseStatus } from '../llm/utils';
+import { LLMMessage, LLMModel } from '../types/llm.types';
 import type { CommandPlugin } from './command-plugins';
-import {
-  callLLMChatCompletion,
-  CallLLMChatCompletionResponseStatus,
-} from "../utils/llm-utils";
-import type { LLMMessage, LLMModel } from "../utils/types";
+
 
 interface Agent {
   name: string;

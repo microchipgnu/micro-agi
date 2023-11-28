@@ -1,5 +1,7 @@
-import { CommandPlugins } from '../command-plugins';
-import { type CallLLMChatCompletionArgs } from "./llm-utils";
+
+import { InternalPlugins } from "../src/internal-plugins";
+import { CallLLMChatCompletionArgs } from "./llm/utils";
+
 
 let functionSchema: CallLLMChatCompletionArgs["functions"];
 export function getFunctionSchema(): Exclude<
@@ -7,7 +9,7 @@ export function getFunctionSchema(): Exclude<
   undefined
 > {
   if (!functionSchema) {
-    functionSchema = CommandPlugins.map((commandPlugin) => ({
+    functionSchema = InternalPlugins.map((commandPlugin) => ({
       name: commandPlugin.command,
       description: commandPlugin.name,
       parameters: {

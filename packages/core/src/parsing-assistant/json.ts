@@ -1,6 +1,7 @@
-import { callAIFunction } from './llm-utils';
-import { getConfig } from './config';
-import { JSON_SCHEMA } from './prompt';
+import { getConfig } from "../config";
+import { callAIFunction } from "../llm/utils";
+import { JSON_SCHEMA } from "../prompts/prompt";
+
 
 export async function fixAndParseJson(
   jsonStr: string,

@@ -5,7 +5,7 @@ import {
   LocalStorage,
   type LocalStorage as LocalStorageType,
 } from "node-localstorage";
-import { constants } from "../constants";
+import { constants } from "../envars";
 
 const canUseDOMLocalStorage =
   typeof window !== "undefined" && window.localStorage;

@@ -1,6 +1,7 @@
-import { getAPIKey } from "./api-key";
-import { constants } from "./constants";
-import type { LLMMessage, LLMModel } from "./types";
+import { getAPIKey } from "../api-key";
+import { constants } from "../envars";
+import { LLMMessage, LLMModel } from "../types/llm.types";
+
 
 export interface CallLLMChatCompletionArgs {
   messages: LLMMessage[];

@@ -1,7 +1,7 @@
-import { callAIFunction } from './llm-utils';
-import { getConfig } from './config';
-import { parse as parseYAML } from 'yaml';
-import { YAML_SCHEMA } from './prompt';
+import { parse as parseYAML } from "yaml";
+import { getConfig } from "../config";
+import { callAIFunction } from "../llm/utils";
+import { YAML_SCHEMA } from "../prompts/prompt";
 
 export async function fixAndParseYAML(
   yamlStr: string,

@@ -1,8 +1,9 @@
-import { callLLMChatCompletion, CallLLMChatCompletionResponseStatus } from '../utils/llm-utils';
-import { countStringTokens } from '../utils/token-counter';
-import { getConfig } from '../utils/config';
+
+import { getConfig } from '../config';
+import { callLLMChatCompletion, CallLLMChatCompletionResponseStatus } from '../llm/utils';
+import { countStringTokens } from '../token-counters/simple';
+import { LLMModel, LLMMessage } from '../types/llm.types';
 import type { CommandPlugin } from './command-plugins';
-import type { LLMMessage, LLMModel } from "../utils/types";
 
 let callProxyFn: (
   url: string

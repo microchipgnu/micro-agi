@@ -4,11 +4,11 @@ import CodeGenerationCommandPlugin from './code-generation-plugins';
 import FileOperationCommandPlugins from './file-operation-command-plugins';
 import MemoryCommandPlugins from './memory-command-plugins';
 import TaskCompleteCommandPlugins from './task-complete-command-plugins';
-import { fixAndParseJson } from '../utils/json-parsing-assist';
-import { fixAndParseYAML } from '../utils/yaml-parsing-assist';
-import type { ResponseSchema } from "../utils/types";
+import { ResponseSchema } from '../types/llm.types';
+import { fixAndParseJson } from '../parsing-assistant/json';
+import { fixAndParseYAML } from '../parsing-assistant/yaml';
 
-export const CommandPlugins = [
+export const InternalPlugins = [
   ...MemoryCommandPlugins,
   ...BrowserCommandPlugins,
   ...FileOperationCommandPlugins,
@@ -67,7 +67,7 @@ export async function executeCommand(
   args: { [key: string]: string }
 ): Promise<string> {
   try {
-    const commandPlugin = CommandPlugins.filter(
+    const commandPlugin = InternalPlugins.filter(
       ({ command: cmd }) => cmd == command
     )[0];
     if (commandPlugin) {

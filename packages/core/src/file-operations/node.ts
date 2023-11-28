@@ -1,6 +1,6 @@
-import { FileOperations } from "./types";
 import * as fs from "fs/promises";
 import * as path from "path";
+import { FileOperations } from "../types/file-operations.types";
 
 export class NodeFileOperations implements FileOperations {
   private directoryPath: string;

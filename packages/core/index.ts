@@ -1,4 +1,4 @@
 import 'dotenv/config';
-import { chatLoop } from "./utils/chat-loop";
+import { chatLoop } from "./src/chat/chat-loop";
 
 chatLoop().catch(console.error);

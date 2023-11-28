@@ -1,5 +1,6 @@
-import { CommandPlugins } from '../command-plugins';
-import type { ResponseSchema } from './types';
+import { InternalPlugins } from "../internal-plugins";
+import { ResponseSchema } from "../types/llm.types";
+
 
 const promptStart =
   "Your decisions must always be made independently without seeking user assistance. Play to your strengths as an LLM and pursue simple strategies with no legal complications.";
@@ -16,7 +17,7 @@ export function generatePrompt(
 }
 
 function generateBasePrompt(responseSchema: ResponseSchema) {
-  const commandsStr = CommandPlugins.map((commandPlugin, index) => {
+  const commandsStr = InternalPlugins.map((commandPlugin, index) => {
     const argsStr = Object.entries(commandPlugin.arguments)
       .map(([key, val]) => `"${key}": "<${val}>"`)
       .join(", ");

@@ -1,4 +1,4 @@
-import type { AutoGPTConfig, LLMModel } from "./types";
+import { AutoGPTConfig, LLMModel } from "./types/llm.types";
 
 const DEFAULT_CONFIG: AutoGPTConfig = {
   models: {

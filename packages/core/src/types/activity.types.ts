@@ -1,4 +1,4 @@
-import type { AIResponseSchema } from "./utils/types";
+import type { AIResponseSchema } from "./llm.types";
 
 export interface SystemInfoActivity {
   id: string;

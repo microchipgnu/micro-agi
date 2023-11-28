@@ -1,11 +1,11 @@
-import { countMessageTokens } from './token-counter';
 import {
+  CallLLMChatCompletionArgs,
+  CallLLMChatCompletionResponse,
   callLLMChatCompletion,
-  type CallLLMChatCompletionArgs,
-  type CallLLMChatCompletionResponse,
-  CallLLMChatCompletionResponseStatus
-  } from './llm-utils';
-import type { LLMMessage, LLMModel } from "./types";
+  CallLLMChatCompletionResponseStatus,
+} from "../llm/utils";
+import { countMessageTokens } from "../token-counters/simple";
+import { LLMMessage, LLMModel } from "../types/llm.types";
 
 interface ChatWithAiArgs {
   prompt: string;
@@ -15,7 +15,7 @@ interface ChatWithAiArgs {
   permanentMemory: string[];
   tokenLimit: number;
   model: LLMModel;
-  functions?: CallLLMChatCompletionArgs["functions"]
+  functions?: CallLLMChatCompletionArgs["functions"];
   debug?: boolean;
 }
 
@@ -98,7 +98,10 @@ export async function chatWithAI({
       { role: "user", content: userInput },
       {
         role: "assistant",
-        content: assistantReply.status === CallLLMChatCompletionResponseStatus.Success ? assistantReply.content : assistantReply.message,
+        content:
+          assistantReply.status === CallLLMChatCompletionResponseStatus.Success
+            ? assistantReply.content
+            : assistantReply.message,
       },
     ]);
 

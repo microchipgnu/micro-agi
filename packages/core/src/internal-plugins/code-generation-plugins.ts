@@ -1,5 +1,6 @@
-import { callAIFunction } from '../utils/llm-utils';
-import { getConfig } from '../utils/config';
+
+import { getConfig } from '../config';
+import { callAIFunction } from '../llm/utils';
 import type { CommandPlugin } from './command-plugins';
 
 async function createCode(descriptionOfCode: string): Promise<string> {
