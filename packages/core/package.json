@@ -1,9 +1,9 @@
 {
-  "name": "micro-agi",
+  "name": "@micro-agi/core",
   "module": "index.ts",
   "type": "module",
   "scripts": {
     "start": "bun .",
-    "docker:build": "docker build -t micro-agi ."
+    "docker:build": "docker build -t micro-agi-core ."
   }
 }
