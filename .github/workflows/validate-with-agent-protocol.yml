@@ -1,3 +1,9 @@
+name: Validate agent protocol compliance
+
+on:
+  push:
+   branches: [ main ]
+
 jobs:
   validate-with-agent-protocol:
     name: Validate agent protocol compliance
