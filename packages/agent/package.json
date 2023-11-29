@@ -2,6 +2,7 @@
   "name": "@micro-agi/agent",
   "module": "index.ts",
   "type": "module",
+  "scripts": {},
   "devDependencies": {
     "bun-types": "latest"
   },

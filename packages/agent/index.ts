@@ -24,4 +24,5 @@ const port = 8000;
 
 Agent.handleTask(taskHandler, {
   port: port,
+  workspace: import.meta.dir,
 }).start();
