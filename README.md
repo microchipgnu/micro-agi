@@ -21,6 +21,8 @@ micro-agi aims to provide a straightforward and effective solution for developer
 ### Future Plans
 - Wait for LM Studio support Function Calls
 - Integrate Agent Protocol
+- Integrate e2b sandbox
+- Integrate e2b assistants API
 - Dockerize
 - Websocket server that streams events
 - State manager
