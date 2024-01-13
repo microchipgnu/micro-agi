@@ -1,4 +1,4 @@
-# micro-agi
+# micro-agi OLD
 
 It is TypeScript framework designed to facilitate the integration of autonomous AI agents with open-source Large Language Models (LLMs). Drawing inspiration from AutoGPT and BabyAGI, this framework is developed to support both browser and server applications.
 
