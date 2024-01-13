@@ -1,0 +1,17 @@
+{
+  "name": "@micro-agi/presets",
+  "module": "index.ts",
+  "version": "0.0.1-alpha.0",
+  "type": "module",
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@micro-agi/core": "workspace:*",
+    "langchain": "^0.1.1",
+    "react": "^18.2.0"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "@micro-agi/core",
+  "module": "index.ts",
+  "version": "0.0.1-alpha.0",
+  "type": "module",
+  "devDependencies": {
+    "@types/react": "^18.2.46",
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "langchain": "0.1.0",
+    "nanoid": "^5.0.4",
+    "react": "^18.2.0"
+  }
+}
