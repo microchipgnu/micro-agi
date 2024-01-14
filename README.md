@@ -87,6 +87,12 @@ In this example, the [Team](#team) contains two [Agent](#agent) components: one 
 
 Coming soon...
 
+## [Create your first team with ChatGPT](https://chat.openai.com/g/g-KSdm64VWE-micro-agi)
+
+Link: [https://chat.openai.com/g/g-KSdm64VWE-micro-agi](https://chat.openai.com/g/g-KSdm64VWE-micro-agi)
+
+![](./assets/chat-gpt-demo.png)
+
 ## The Why
 
 Back in December 2023 I started exploring the different options to build, orchestrate and run AI autonomous agents and I found several options like AutoGPT, baby-agi, smol-dev and a few others. I got frustrated with the lack of projects that would tap in the vast JS ecosystem (browser and node). I started running a few experiments -- that can be found in the branch [deprecated](https://github.com/microchipgnu/micro-agi/tree/deprecated).
