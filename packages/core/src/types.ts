@@ -1,5 +1,5 @@
 import { BaseLanguageModel } from "langchain/base_language";
-import { DynamicTool, Tool as LangchainTool } from "langchain/tools";
+import { Tool as LangchainTool } from "langchain/tools";
 import Agent from "./components/agent";
 
 export interface Agent {
@@ -75,7 +75,7 @@ export enum Process {
   Parallel,
 }
 
-export type Tool = LangchainTool | DynamicTool;
+export type Tool = LangchainTool;
 
 export interface AgentToolsContextProps {
   delegateWork: (command: string, agents: Agent[]) => any;

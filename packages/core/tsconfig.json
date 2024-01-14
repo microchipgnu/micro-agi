@@ -21,4 +21,5 @@
       "bun-types" // add Bun global
     ]
   },
+  "exclude": ["node_modules", "dist", "docs", "**/tests"]
 }

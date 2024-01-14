@@ -77,8 +77,6 @@ export const AgentProvider: React.FC<AgentState & { children: ReactNode }> = (
           role: state.role || "no role",
           backstory: state.backstory || "no backstory",
           tool_names: toolNames.join(", "),
-          // @ts-ignore
-          // TODO: fix this
           tools: renderTextDescription(state.tools || []),
         });
 
@@ -98,8 +96,6 @@ export const AgentProvider: React.FC<AgentState & { children: ReactNode }> = (
           // @ts-ignore
           // TODO: fix this
           agent: runnable,
-          // @ts-ignore
-          // TODO: fix this
           tools: state.tools || [],
           verbose: state.verbose || false,
           handleParsingErrors: `Check you output and make sure it conforms! Do not output an "Action Input:" and a "Final Answer:" at the same time`,
@@ -121,8 +117,6 @@ export const AgentProvider: React.FC<AgentState & { children: ReactNode }> = (
         const _output = await agentExecutor?.invoke({
           input: _task,
           tool_names: toolNames.join(", "),
-          // @ts-ignore
-          // TODO: fix this
           tools: renderTextDescription(state.tools || []),
         });
 
@@ -140,8 +134,7 @@ export const AgentProvider: React.FC<AgentState & { children: ReactNode }> = (
 
   const { addAgent, removeAgent, dispatch: dispatchTeam } = useTeam();
   const { addMessage } = useMessage();
-  // @ts-ignore
-  // TODO: fix this
+
   const { parser } = useOutputParser({ tools: state.tools || [] });
 
   useEffect(() => {

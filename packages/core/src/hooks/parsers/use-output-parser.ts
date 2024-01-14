@@ -1,5 +1,5 @@
 import { ReActSingleInputOutputParser } from "langchain/agents/react/output_parser";
-import { Tool } from "langchain/tools";
+import { Tool } from "../../types";
 
 export const useOutputParser = ({
   tools,

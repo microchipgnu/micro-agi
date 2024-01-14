@@ -1,5 +1,5 @@
-import { DynamicTool } from "@langchain/community/tools/dynamic";
-import { Agent } from "../../types";
+import { DynamicTool } from "langchain/tools";
+import { Agent, Tool } from "../../types";
 
 const getDelegateWorkDescription = (coworkerNames: string) => `
 Useful to delegate a specific task to one of the following co-workers: [${coworkerNames}].
