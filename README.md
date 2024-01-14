@@ -13,7 +13,7 @@
 ```
 
 - [Introduction](#introduction)
-- [What is micro-agi?](#what-is-micro-agi)
+- [What is micro-agi?](https://github.com/microchipgnu/micro-agi/wiki/What-is-micro%E2%80%90agi%3F)
 - [How It Works](#how-it-works)
 - [Features](#features)
 - [Examples](#examples)
@@ -23,36 +23,6 @@
 ## Introduction
 
 Welcome to `micro-agi`, an innovative React-based framework designed for building and orchestrating role-player, AI autonomous agents. This project, inspired by the vast potential of the JavaScript ecosystem, provides a unique approach to managing AI agents in both browser and server-based applications.
-
-## What is micro-agi?
-
-`micro-agi` enables the creation of AI autonomous agents using a structured, JSX-style syntax. This framework facilitates the development of sophisticated AI agents that can perform a variety of tasks autonomously and interact with each other to solve complex problems.
-
-`micro-agi` is built around three fundamental components: Team, Agent, and Task. Each plays a crucial role in the orchestration of AI autonomous agents. Let's delve deeper into these components.
-
-### Team
-
-A `Team` is a container that groups a collection of `Agent` components. It represents a collaborative unit within which agents can interact, delegate tasks, and combine their efforts to achieve common objectives.
-
-- **Purpose:** Acts as a collaborative environment for agents.
-- **Usage:** Define a `Team` to encapsulate a group of agents working towards a shared goal.
-
-### Agent
-
-An `Agent` is an individual entity within a `Team` with a specific role and set of responsibilities. Each agent can be assigned one or more tasks.
-
-- **Roles:** Define the role of an agent (e.g., designer, developer) to specify its function within the team.
-- **Autonomy:** Agents can work independently or collaborate with other agents.
-- **Interaction:** Agents within the same team can communicate and delegate tasks among themselves.
-- **Tools Compatibility**: Agents can be attributed tools that are compatible with Langchain, enhancing their capabilities in natural language processing and understanding.
-
-### Task
-
-A `Task` is an actionable item assigned to an agent. It defines what needs to be done and can include specific parameters or requirements.
-
-- **Flexibility:** Tasks can range from simple to complex and can be dynamically assigned or re-assigned to agents.
-- **Customizable:** Each task can be tailored with specific descriptions, parameters, and tools needed for completion.
-- **Tools Assignment**: Tasks can be assigned specific tools compatible with Langchain, allowing for more sophisticated processing and execution.
 
 ## How It Works
 
