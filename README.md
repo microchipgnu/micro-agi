@@ -1,5 +1,17 @@
 # micro-agi: A React-Based Framework for AI Autonomous Agents
 
+```jsx
+<Team>
+  <Agent role="designer">
+    <Task description="design landing page" />
+  </Agent>
+  <Agent role="frontend developer">
+    <Task description="develop landing page with react and tailwind" />
+    <Task description="publish to github" />
+  </Agent>
+</Team>
+```
+
 - [Introduction](#introduction)
 - [What is micro-agi?](#what-is-micro-agi)
 - [How It Works](#how-it-works)
