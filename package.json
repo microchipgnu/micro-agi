@@ -9,8 +9,8 @@
     "cli:dev": "bun run ./packages/cli/index.tsx",
     "core:build:node": "bun build ./packages/core/index.ts --outdir ./packages/core/dist/node --target node",
     "core:build:browser": "bun build ./packages/core/index.ts --outdir ./packages/core/dist/browser --target browser",
-    "core:build": "bun run core:build:browser && bun run core:build:node",
-    "core:publish": "npm publish ./packages/core"
+    "core:build": "bun ./packages/core/build.ts",
+    "core:publish": "npm publish ./packages/core/dist"
   },
   "devDependencies": {
     "@types/node": "^20.10.7",
@@ -22,6 +22,6 @@
   },
   "dependencies": {
     "@langchain/community": "^0.0.15",
-    "langchain": "0.1.0"
+    "langchain": "0.1.2"
   }
 }
