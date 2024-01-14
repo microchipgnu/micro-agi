@@ -1,5 +1,5 @@
 import { BaseLanguageModel } from "langchain/base_language";
-import { Tool } from "langchain/tools";
+import { DynamicTool, Tool as LangchainTool } from "langchain/tools";
 import Agent from "./components/agent";
 
 export interface Agent {
@@ -8,7 +8,7 @@ export interface Agent {
   role?: string;
   goal?: string;
   backstory?: string;
-  llm?: BaseLanguageModel | undefined;
+  llm?: BaseLanguageModel | any | undefined; // TODO: fix this type
   memory?: boolean;
   verbose?: boolean;
   allowDelegation?: boolean;
@@ -75,7 +75,7 @@ export enum Process {
   Parallel,
 }
 
-export type Tools = Tool[];
+export type Tool = LangchainTool | DynamicTool;
 
 export interface AgentToolsContextProps {
   delegateWork: (command: string, agents: Agent[]) => any;
@@ -85,7 +85,7 @@ export interface AgentToolsContextProps {
 
 export type Message = {
   message: string;
-  type: "error" | "info" | "success" | "warning"
+  type: "error" | "info" | "success" | "warning";
 };
 
 export interface MessageState {

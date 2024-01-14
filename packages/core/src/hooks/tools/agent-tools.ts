@@ -1,6 +1,5 @@
 import { DynamicTool } from "@langchain/community/tools/dynamic";
 import { Agent } from "../../types";
-import { CallbackManagerForToolRun } from "langchain/callbacks";
 
 const getDelegateWorkDescription = (coworkerNames: string) => `
 Useful to delegate a specific task to one of the following co-workers: [${coworkerNames}].
@@ -20,27 +19,21 @@ export const useAgentTools = ({ agents }: { agents: Agent[] }) => {
       new DynamicTool({
         name: "Delegate Work to Co-Worker",
         description: getDelegateWorkDescription(coworkerNames),
-        func: (
-          command: string,
-          runManager?: CallbackManagerForToolRun | undefined
-        ) => {
+        func: async (command: string) => {
           return delegateWork(command);
         },
       }),
       new DynamicTool({
         name: "Ask Question to Co-Worker",
         description: getAskQuestionDescription(coworkerNames),
-        func: (
-          command: string,
-          runManager?: CallbackManagerForToolRun | undefined
-        ) => {
+        func: async (command: string) => {
           return askQuestion(command);
         },
       }),
     ];
   };
 
-  const execute = (command: string) => {
+  const execute = async (command: string): Promise<string> => {
     try {
       const [agentRole, task, information] = command.split("|");
       if (!agentRole || !task || !information) {
@@ -56,8 +49,8 @@ export const useAgentTools = ({ agents }: { agents: Agent[] }) => {
     }
   };
 
-  const delegateWork = (command: string) => execute(command);
-  const askQuestion = (command: string) => execute(command);
+  const delegateWork = async (command: string) => execute(command);
+  const askQuestion = async (command: string) => execute(command);
 
   return { tools, delegateWork, askQuestion };
 };
