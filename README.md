@@ -18,6 +18,7 @@
 - [Features](#features)
 - [Examples](#examples)
 - [The Why](#the-why)
+- [🔗 Chat with a 🤖 GPT to create your first Team](https://chat.openai.com/g/g-KSdm64VWE-micro-agi)
 
 ## Introduction
 
