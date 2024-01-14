@@ -1,4 +1,3 @@
-import Sandbox from "@e2b/sdk";
 import { Alert, Spinner } from "@inkjs/ui";
 import { Agent, Task, Team, useTeam } from "@micro-agi/core";
 import { useMessage } from "@micro-agi/core/src/providers/messages-providers";

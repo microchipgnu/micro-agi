@@ -1,24 +1,49 @@
+// @ts-ignore
+// TODO: fix this import
 import packageJson from "./package.json";
+import { promisify } from "util";
+import { exec } from "child_process";
 
-const BUILD_DIR = `${import.meta.dir}/dist`;
-const ENTRYPOINT = `${import.meta.dir}/index.ts`;
+const execAsync = promisify(exec);
 
-const result = await Bun.build({
-  entrypoints: [ENTRYPOINT],
-  outdir: BUILD_DIR,
-  sourcemap: "external",
-  external: ["langchain", "@langchain", "react"],
-});
+const BASE_DIR = import.meta.dir;
+const BUILD_DIR = `${BASE_DIR}/dist`;
+const ENTRYPOINT = `${BASE_DIR}/index.js`; // Adjusted to point to compiled JS file
 
-await Bun.write(
-  `${BUILD_DIR}/package.json`,
-  JSON.stringify({ ...packageJson, module: "index.js" }, null, 2)
-);
+async function build() {
+  try {
+    const { stdout, stderr } = await execAsync(
+      `tsc -p ${BASE_DIR}`
+    );
+    console.log(stdout);
+    if (stderr) {
+      console.log(stderr);
+      throw new Error(`TypeScript compilation error: ${stderr}`);
+    }
 
-if (!result.success) {
-  console.error("Build failed");
-  for (const message of result.logs) {
-    // Bun will pretty print the message object
-    console.error(message);
+    // Bun build process
+    const result = await Bun.build({
+      entrypoints: [ENTRYPOINT],
+      outdir: BUILD_DIR,
+      sourcemap: "external",
+      external: ["langchain", "@langchain", "react"],
+    });
+
+    // Write package.json in the build directory
+    await Bun.write(
+      `${BUILD_DIR}/package.json`,
+      JSON.stringify({ ...packageJson, module: "index.js" }, null, 2)
+    );
+
+    if (!result.success) {
+      throw new Error("Bun build failed");
+    }
+
+    console.log("Build completed successfully");
+  } catch (error) {
+    console.error("Build error:", error);
+    process.exit(1);
   }
 }
+
+build();

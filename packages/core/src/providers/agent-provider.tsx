@@ -80,6 +80,8 @@ export const AgentProvider: React.FC<AgentState & { children: ReactNode }> = (
           tools: renderTextDescription(state.tools || []),
         });
 
+        // @ts-ignore
+        // TODO: fix this
         const runnable = RunnableSequence.from([
           {
             input: (i: InputValues) => i.input,
@@ -91,6 +93,8 @@ export const AgentProvider: React.FC<AgentState & { children: ReactNode }> = (
         ]);
 
         const agentExecutor = AgentExecutor.fromAgentAndTools({
+          // @ts-ignore
+          // TODO: fix this
           agent: runnable,
           tools: state.tools || [],
           verbose: state.verbose || false,
@@ -130,6 +134,7 @@ export const AgentProvider: React.FC<AgentState & { children: ReactNode }> = (
 
   const { addAgent, removeAgent, dispatch: dispatchTeam } = useTeam();
   const { addMessage } = useMessage();
+
   const { parser } = useOutputParser({ tools: state.tools || [] });
 
   useEffect(() => {

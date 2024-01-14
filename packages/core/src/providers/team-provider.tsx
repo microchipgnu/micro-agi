@@ -1,6 +1,5 @@
-import { Tool } from "langchain/tools";
 import React, { ReactNode, createContext, useContext, useReducer } from "react";
-import { Agent, Process, Task, TeamAction, TeamState } from "../types";
+import { Agent, Process, Task, TeamAction, TeamState, Tool } from "../types";
 import { useMessage } from "./messages-providers";
 import { useAgentTools } from "../hooks/tools/agent-tools";
 
@@ -169,6 +168,8 @@ export const TeamProvider: React.FC<TeamState & { children: ReactNode }> = (
           const agentTools = tools();
 
           if (task.id) {
+            // @ts-ignore
+            // TODO: Fix this
             setTaskTools(task.id, [...(task.tools || []), ...agentTools]);
           }
         }
