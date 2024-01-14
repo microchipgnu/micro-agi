@@ -1,6 +1,6 @@
 {
   "name": "micro-agi",
-  "private": true,
+  "private": false,
   "workspaces": [
     "packages/*"
   ],
