@@ -7,10 +7,12 @@
   "scripts": {
     "app:dev": "cd ./packages/app && bunx --bun vite --host",
     "cli:dev": "bun run ./packages/cli/index.tsx",
+    "cli:build": "bun run ./packages/cli/build.ts",
+    "cli:publish": "bun run cli:build && npm publish ./packages/cli/dist --access public",
     "core:build:node": "bun build ./packages/core/index.ts --outdir ./packages/core/dist/node --target node",
     "core:build:browser": "bun build ./packages/core/index.ts --outdir ./packages/core/dist/browser --target browser",
     "core:build": "bun ./packages/core/build.ts",
-    "core:publish": "bun run core:build && npm publish ./packages/core/dist"
+    "core:publish": "bun run core:build && npm publish ./packages/core/dist --access public"
   },
   "devDependencies": {
     "@types/node": "^20.10.7",

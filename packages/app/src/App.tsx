@@ -11,14 +11,13 @@ import {
   TableHeader,
   TableRow,
 } from "./components/ui/table";
-import { DynamicTool } from "langchain/tools";
-import { OpenAI } from "langchain/llms/openai";
+// import { OpenAI } from "langchain/llms/openai";
 
-const chatgpt = new OpenAI({
-  openAIApiKey: "XXX",
-  temperature: 1,
-  modelName: "gpt-4-1106-preview",
-});
+// const chatgpt = new OpenAI({
+//   openAIApiKey: "XXX",
+//   temperature: 1,
+//   modelName: "gpt-4-1106-preview",
+// });
 
 const Main = () => {
   return (
@@ -29,17 +28,7 @@ const Main = () => {
         backstory="With a passion for meteorology, you have extensive experience
         in analyzing weather patterns and predicting climate conditions.
         Your accuracy in forecasts is unmatched."
-        llm={chatgpt}
         verbose
-        tools={[
-          new DynamicTool({
-            name: "Weather Forecasts",
-            description: "Provides weather forecasts",
-            func: async (input: string) => {
-              return "It will rain";
-            },
-          }),
-        ]}
       >
         <Task
           description="Analyze the current weather conditions and provide a detailed forecast
@@ -52,7 +41,6 @@ const Main = () => {
         backstory="As a fashion expert, you have an eye for style and comfort.
         You're adept at choosing outfits that are not only fashionable but also
         suitable for the day's weather."
-        llm={chatgpt}
       >
         <Task
           description="Using the weather forecast provided, select a set of clothes

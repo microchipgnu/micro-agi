@@ -20,8 +20,7 @@
     "react-dom": "^18.2.0",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
-    "@micro-agi/core": "workspace:*",
-    "@micro-agi/presets": "workspace:*"
+    "@micro-agi/core": "0.0.1-alpha.7"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

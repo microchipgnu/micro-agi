@@ -8,12 +8,10 @@ const execAsync = promisify(exec);
 
 const BASE_DIR = import.meta.dir;
 const BUILD_DIR = `${BASE_DIR}/dist`;
-const ENTRYPOINT = `${BASE_DIR}/index.js`; // Adjusted to point to compiled JS file
+const ENTRYPOINT = `${BASE_DIR}/index.tsx`; // Adjusted to point to compiled JS file
 
 async function build() {
   try {
-    await execAsync(`rm -rf ${BUILD_DIR}`);
-
     const { stdout, stderr } = await execAsync(`tsc -p ${BASE_DIR}`);
     console.log(stdout);
     if (stderr) {
@@ -25,19 +23,29 @@ async function build() {
     const result = await Bun.build({
       entrypoints: [ENTRYPOINT],
       outdir: BUILD_DIR,
-      sourcemap: "external",
-      external: ["langchain", "@langchain", "react"],
-      target:"browser",
+      target: "node",
+      external: Object.keys(packageJson.dependencies),
     });
 
     // Write package.json in the build directory
     await Bun.write(
       `${BUILD_DIR}/package.json`,
-      JSON.stringify({ ...packageJson, module: "./index.js" }, null, 2)
+      JSON.stringify(
+        {
+          ...packageJson,
+          module: "index.js",
+          bin: {
+            "micro-agi-cli": "./index.js",
+          },
+          dependencies: {
+            ...packageJson.dependencies,
+            "@micro-agi/core": "latest",
+          },
+        },
+        null,
+        2
+      )
     );
-
-    await execAsync(`rm ${BUILD_DIR}/build.d.ts`);
-    await execAsync(`rm ${BUILD_DIR}/build.js`);
 
     if (!result.success) {
       throw new Error("Bun build failed");

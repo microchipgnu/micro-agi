@@ -1,6 +1,7 @@
+#!/usr/bin/env bun
+
 import { Alert, Spinner } from "@inkjs/ui";
-import { Agent, Task, Team, useTeam } from "@micro-agi/core";
-import { useMessage } from "@micro-agi/core/src/providers/messages-providers";
+import { Agent, Task, Team, useTeam, useMessage } from "@micro-agi/core";
 import { Box, Text, render } from "ink";
 import BigText from "ink-big-text";
 import Gradient from "ink-gradient";
@@ -110,9 +111,9 @@ const App = () => {
 const CLI = ({ children }: { children?: React.ReactNode }) => {
   return (
     <>
-      <Gradient name="mind">
+      {/* <Gradient name="mind">
         <BigText text={"micro agi"} />
-      </Gradient>
+      </Gradient> */}
       <Team>
         {children}
         <App />

@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
     "lib": ["ESNext"],
+    "outDir": "./dist",
     "module": "esnext",
     "target": "esnext",
     "moduleResolution": "bundler",
     "moduleDetection": "force",
-    "allowImportingTsExtensions": true,
-    "noEmit": true,
+    "allowImportingTsExtensions": false,
+    "noEmit": false,
     "composite": true,
     "strict": true,
     "downlevelIteration": true,
