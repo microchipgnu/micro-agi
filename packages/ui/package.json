@@ -1,5 +1,5 @@
 {
-  "name": "@micro-agi/app",
+  "name": "@micro-agi/ui",
   "private": true,
   "version": "0.0.0",
   "type": "module",

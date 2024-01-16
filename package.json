@@ -5,7 +5,7 @@
     "packages/*"
   ],
   "scripts": {
-    "app:dev": "cd ./packages/app && bunx --bun vite --host",
+    "ui:dev": "cd ./packages/ui && bunx --bun vite --host",
     "cli:dev": "bun run ./packages/cli/index.tsx",
     "cli:build": "bun run ./packages/cli/build.ts",
     "cli:publish": "bun run cli:build && npm publish ./packages/cli/dist --access public",
@@ -24,6 +24,6 @@
   },
   "dependencies": {
     "@langchain/community": "^0.0.15",
-    "langchain": "0.1.2"
+    "langchain": "^0.1.3"
   }
 }

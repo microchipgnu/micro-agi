@@ -50,7 +50,7 @@ In this example, the [Team](#team) contains two [Agent](#agent) components: one 
 - Processes Driven: Currently only supports sequential task execution but more complex processes like consensual and hierarchical being worked on.
 - React-based framework: Taps into the whole React ecosystem
 - Suitable for browser and server-based apps
-  - See [App](./packages/app/) example
+  - See [UI](./packages/ui/) example
   - See [CLI](./packages/cli/) example
 
 ## Examples
