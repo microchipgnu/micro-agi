@@ -1,6 +1,9 @@
-# micro-agi
+<div style="display: flex; align-items: center; margin-bottom: 30px; justify-content: center">
+  <img style="height: 100px; width: 100px" src="./assets/logo.png"/>
+  <div style="font-style: italic; font-weight: bold; margin-left: 10px; font-size: 30px">micro-agi</div>
+</div>
 
-Welcome to `micro-agi`, an innovative React-based framework designed for building and orchestrating role-player, AI autonomous agents. 
+Welcome to `micro-agi`, an innovative React-based framework designed for building and orchestrating role-player, AI autonomous agents.
 
 This project, inspired by the vast potential of the JavaScript ecosystem, provides a unique approach to managing AI agents in both browser and server-based applications.
 
@@ -22,22 +25,19 @@ With `micro-agi`, you can create complex systems of AI agents that work together
 
 Read the [documentation](https://agi.microchipgnu.pt).
 
-
 ### Prerequisites
 
 Before you begin, ensure you have the following installed:
 
 1. Node.js (LTS version)
 2. A package manager like npm, pnpm or Bun
-4. Basic understanding of React and JSX
-
+3. Basic understanding of React and JSX
 
 ### Installation
 
-To get started with `micro-agi`, you need to install the package in your React project. 
+To get started with `micro-agi`, you need to install the package in your React project.
 
 micro-agi works seamlessly with [AI.JSX](https://docs.ai-jsx.com), a framework for building AI applications using JavaScript and JSX. To take full advantage of micro-agi, make sure you have [AI.JSX](https://docs.ai-jsx.com) installed in your project.
-
 
 If you're using Bun as your package manager, run the following command:
 
@@ -71,17 +71,17 @@ import Task from "micro-agi/core/components/task";
 function App() {
   return (
     <AI.jsx>
-        <Team>
+      <Team>
         <Agent role="designer">
-            <Task>Design landing page</Task>
+          <Task>Design landing page</Task>
         </Agent>
         <Agent role="frontend developer">
-            <Task>Develop landing page with React and Tailwind</Task>
-            <Task>Publish to GitHub</Task>
+          <Task>Develop landing page with React and Tailwind</Task>
+          <Task>Publish to GitHub</Task>
         </Agent>
-        </Team>
+      </Team>
     </AI.jsx>
-  )
+  );
 }
 
 export default App;
