@@ -4,37 +4,21 @@ import ChatAgent, {
   Message,
 } from "../core/agents/chat-agent.js";
 import { OpenRouter } from "../core/providers/open-router.js";
+import { SystemMessage, UserMessage } from "ai-jsx/core/conversation";
+import ModelSelector from "../core/models/model-selector.js";
+import Agent from "../core/components/agent.js";
+import Task from "../core/components/task.js";
 
-
-const memory: MemoryManager & { _history: Message[] } = {
-  _history: [
-    {
-      role: "system",
-      content: `You are a helpful assistant and you answer all the questions a user asks you.`,
-    },
-  ],
-  saveHistory: async (_, messages) => {
-    memory._history = messages;
-  },
-  fetchHistory: async (_) => {
-    return memory._history;
-  },
-};
-
-const App = ({ children }: { children: AI.Node }) => {
+const App = () => {
   return (
-    <OpenRouter model="jondurbin/bagel-34b">
-      <ChatAgent memoryManager={memory} conversationId={"id-1"}>
-        {children}
-      </ChatAgent>
-    </OpenRouter>
+    <Agent agentType="chat" provider="lm-studio">
+      <Task>What's Portugal?</Task>
+    </Agent>
   );
 };
 
 const renderContext = AI.createRenderContext({});
 
-let response = await renderContext.render(
-  <App>What is the capital of Portugal?</App>
-);
+let response = await renderContext.render(<App />);
 
 console.log(response);

@@ -23,9 +23,9 @@ const Agent = async (
   {
     children,
     tools = [],
-    role,
-    goal,
-    backstory,
+    role = "assistant",
+    goal = "answer the question",
+    backstory = "no backstory",
     context,
     model = "mistral",
     provider = "ollama",

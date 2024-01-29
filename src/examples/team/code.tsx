@@ -7,7 +7,7 @@ import { Multimodal } from "../multimodal/index.js";
 const App = async () => {
   return (
     <Team>
-      <Agent
+      {/* <Agent
         role="Business Analyst"
         goal="Ask the user information about their desired product"
         backstory="You are an experienced business analyst and will ask the user to provide information about their business"
@@ -15,11 +15,13 @@ const App = async () => {
         <Task>
           <Multimodal url="https://arweave.net/Ro7KNAnJLk1HayqYrBkRXSgf2H7Ni03exgqz-8dTknE"></Multimodal>
         </Task>
-      </Agent>
+      </Agent> */}
       <Agent
         role="Front-End Developer"
         goal="Craft an engaging and intuitive user interface"
         backstory="Specializing in front-end technologies, you bring designs to life with your skills in HTML, CSS, and JavaScript. Your focus is on creating a responsive and visually appealing interface that provides an excellent user experience."
+        agentType="mrkl"
+        provider="lm-studio"
       >
         <Task>
           Create HTML code for a simple landing page. You don't need to open an
