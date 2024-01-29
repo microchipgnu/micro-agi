@@ -183,7 +183,7 @@ export const MrklAgent = async (
     children: question,
     maxIterations = MAX_ITERATIONS_DEFAULT,
   }: MrklAgentProps,
-  { render }: AI.RenderContext
+  { render, logger }: AI.ComponentContext
 ): Promise<AI.Node> => {
   let finalAnswer = "";
   let iteration = 0;
@@ -197,8 +197,12 @@ export const MrklAgent = async (
       </Completion>
     );
 
+    logger.debug({ type: "llmResponse", value: llmResponse });
+
     try {
       const parsedResponse = parseLlmResponse(llmResponse);
+
+      logger.debug({ type: "parsedResponse", value: parsedResponse });
 
       if (parsedResponse.type === "action" && parsedResponse.actions) {
         for (const action of parsedResponse.actions) {
@@ -209,6 +213,8 @@ export const MrklAgent = async (
 
             try {
               toolResult = await toolToUse.callback(action.input);
+
+              logger.debug({ type: "toolResult", value: toolResult });
             } catch (error) {
               console.error(error);
             }

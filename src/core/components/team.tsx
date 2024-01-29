@@ -1,5 +1,4 @@
 import * as AI from "ai-jsx";
-import { nanoid } from "nanoid";
 
 export const TeamContext = AI.createContext({
   process: "sequential",
@@ -36,7 +35,7 @@ const _renderTeam = async (
     }
   }
 
-  return teamContext.agentResults[teamContext.agentResults.length - 1].context;
+  return teamContext.agentResults[teamContext.agentResults.length - 1].result;
 };
 
 const Team = async (

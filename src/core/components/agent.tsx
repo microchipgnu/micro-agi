@@ -154,7 +154,6 @@ const Agent = async (
       task: childrenResult.result,
     });
   }
-
   return teamContext.agentResults[teamContext.agentResults.length - 1].result;
 };
 

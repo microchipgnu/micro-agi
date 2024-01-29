@@ -11,24 +11,22 @@ const App = async () => {
         goal="Provide expert insights on dinosaur biology and evolution"
         backstory="You are a renowned expert in paleontology with years of experience in studying dinosaur fossils.
         Your deep understanding of dinosaur anatomy, behavior, and evolutionary history is crucial for accurate and engaging content."
+        agentType="mrkl"
       >
         <Task>
-          Research and compile information on various dinosaur species, focusing
-          on their physical characteristics, habits, and habitats.
+          Find and collect information about T-Rex. Return a few facts about it.
         </Task>
       </Agent>
 
-      <Agent
+      {/* <Agent
         role="Science Writer"
         goal="Craft an engaging and informative article about dinosaurs"
         backstory="You have a talent for making complex scientific topics accessible and exciting to a broad audience.
         Your writing skills are essential in translating the expert knowledge into a captivating article."
         agentType="mrkl"
       >
-        <Task>
-          Write an informative article in the format of Markdown.
-        </Task>
-      </Agent>
+        <Task>Write an informative article in the format of Markdown.</Task>
+      </Agent> */}
 
       {/* 
       <Agent
