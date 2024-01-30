@@ -1,6 +1,6 @@
-<img style="height: 100px; width: 100px" src="./assets/logo.png"/>
+<img src="./assets/banner.png"/>
 
-# micro-agi
+---
 
 Welcome to `micro-agi`, an innovative React-based framework designed for building and orchestrating role-player, AI autonomous agents.
 

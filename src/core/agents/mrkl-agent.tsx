@@ -190,6 +190,8 @@ export const MrklAgent = async (
   let scratchPad = `${question}\n`;
 
   while (!finalAnswer && iteration < maxIterations) {
+
+    // TODO: add support to chat completions to get access to better models
     const llmResponse = await render(
       <Completion stop={[OBSERVATION_PREFIX]}>
         {buildPrompt(tools, role, goal, backstory)}

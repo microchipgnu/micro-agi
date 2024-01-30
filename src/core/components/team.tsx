@@ -5,7 +5,7 @@ export const TeamContext = AI.createContext({
   agentResults: [] as any[],
 });
 
-const _renderTeam = async (
+const _renderSequentialTeam = async (
   children: AI.Node,
   renderContext: AI.RenderContext
 ) => {
@@ -42,12 +42,17 @@ const Team = async (
   {
     children,
     process = "sequential",
-  }: { children?: AI.Node; process?: "sequential" },
+  }: { children?: AI.Node; process?: "sequential" | "parallel" },
   renderContext: AI.RenderContext
 ): Promise<AI.Node> => {
+  const teamContext = renderContext.getContext(TeamContext);
+
+  teamContext.process = process;
+
   return (
     <TeamContext.Provider value={{ process: process, agentResults: [] }}>
-      {await _renderTeam(children, renderContext)}
+      {process === "sequential" &&
+        (await _renderSequentialTeam(children, renderContext))}
     </TeamContext.Provider>
   );
 };

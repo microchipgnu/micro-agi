@@ -46,7 +46,18 @@ const Agent = async (
   const teamContext = getContext(TeamContext);
   const agentContext = getContext(AgentContext);
 
-  agentContext.tools = tools;
+  agentContext.tools = [
+    ...tools,
+    {
+      name: "agentGetContext",
+      description:
+        "Use this tool to get the current context of the executing process. Might be helpful to understand what other team agents have done.",
+      callback: async () => {
+        const teamContext = getContext(TeamContext);
+        return JSON.stringify(teamContext.agentResults);
+      },
+    },
+  ];
 
   const messages: Messages = {};
 
@@ -154,6 +165,7 @@ const Agent = async (
       task: childrenResult.result,
     });
   }
+
   return teamContext.agentResults[teamContext.agentResults.length - 1].result;
 };
 

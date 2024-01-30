@@ -5,7 +5,7 @@ import Team from "../../core/components/team.js";
 
 const App = async () => {
   return (
-    <Team>
+    <Team process="sequential">
       <Agent
         role="Paleontologist"
         goal="Provide expert insights on dinosaur biology and evolution"
@@ -18,15 +18,15 @@ const App = async () => {
         </Task>
       </Agent>
 
-      {/* <Agent
+      <Agent
         role="Science Writer"
         goal="Craft an engaging and informative article about dinosaurs"
         backstory="You have a talent for making complex scientific topics accessible and exciting to a broad audience.
         Your writing skills are essential in translating the expert knowledge into a captivating article."
         agentType="mrkl"
       >
-        <Task>Write an informative article in the format of Markdown.</Task>
-      </Agent> */}
+        <Task>Write an informative article in the format of Markdown based on the Paleontologist research. Get the current context</Task>
+      </Agent>
 
       {/* 
       <Agent
