@@ -41,19 +41,19 @@ micro-agi works seamlessly with [AI.JSX](https://docs.ai-jsx.com), a framework f
 If you're using Bun as your package manager, run the following command:
 
 ```sh
-bun add micro-agi ai-jsx
+bun add micro-agi
 ```
 
 For npm users, use:
 
 ```sh
-npm install micro-agi ai-jsx
+npm install micro-agi
 ```
 
 For pnpm users, use:
 
 ```sh
-pnpm install micro-agi ai-jsx
+pnpm install micro-agi
 ```
 
 ### Creating an AI Agent Team
