@@ -1,4 +1,4 @@
-import { Ollama } from "../../core/models/ollama.js";
+import { Ollama } from "../../core/providers/ollama.js";
 import { LlavaImage } from "../../core/utils/llava-image.js";
 import { Node, createRenderContext } from "ai-jsx";
 import { Completion } from "ai-jsx/core/completion";

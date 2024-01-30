@@ -7,7 +7,7 @@ import {
   ModelProviderProps,
   StreamedChunk,
   doQueryLlm,
-} from "./model-provider.js";
+} from "../models/model-provider.js";
 import * as AI from "ai-jsx";
 
 const AI_JSX_OLLAMA_API_BASE =

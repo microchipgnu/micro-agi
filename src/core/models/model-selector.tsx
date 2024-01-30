@@ -1,6 +1,6 @@
 import * as AI from "ai-jsx";
 import { OpenAIChatModel } from "ai-jsx/lib/openai";
-import { Ollama } from "./ollama.js";
+import { Ollama } from "../providers/ollama.js";
 import { OpenRouter } from "../providers/open-router.js";
 
 const ModelSelector = ({
