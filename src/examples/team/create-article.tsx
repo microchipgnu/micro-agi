@@ -25,38 +25,11 @@ const App = async () => {
         Your writing skills are essential in translating the expert knowledge into a captivating article."
         agentType="mrkl"
       >
-        <Task>Write an informative article in the format of Markdown based on the Paleontologist research. Get the current context</Task>
-      </Agent>
-
-      {/* 
-      <Agent
-        role="Historian"
-        goal="Provide context on the historical significance of dinosaurs"
-        backstory="Your expertise in history helps in understanding the impact of dinosaur discoveries on science and culture.
-        You offer a unique perspective on how dinosaurs have been perceived throughout history."
-      >
         <Task>
-          Research historical perspectives on dinosaurs and their influence on
-          culture and science. Provide insights on how the understanding of
-          dinosaurs has evolved over time. Assist the Science Writer in adding
-          historical context to the article.
+          Write an informative article in the format of Markdown based on the
+          Paleontologist research. Get the current context
         </Task>
       </Agent>
-
-      <Agent
-        role="Illustrator"
-        goal="Create visual representations of dinosaurs and their environment"
-        backstory="You are skilled in scientific illustration, capable of bringing prehistoric creatures to life through your art.
-        Your illustrations will help readers visualize the world of dinosaurs, enhancing the overall appeal of the article."
-      >
-        <Task>
-          Design and produce illustrations of various dinosaurs, based on
-          descriptions and data provided by the Paleontologist. Create images
-          that depict the habitats and ecosystems in which dinosaurs lived.
-          Collaborate with the Science Writer to ensure the illustrations
-          complement the article's narrative.
-        </Task>
-      </Agent> */}
     </Team>
   );
 };

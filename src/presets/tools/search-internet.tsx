@@ -91,8 +91,6 @@ export const browseWebsiteTool: Tool<{ url: string }, string> = {
       </OpenRouter>
     );
 
-    console.log(summary);
-
     return `Website Content Summary:\n ${"summary"}\n\nLinks:\n`;
   },
 };
@@ -105,8 +103,6 @@ export const searchInternetTool: Tool<{ query: string }, string> = {
   validateInput: (input) => typeof input.query === "string",
   callback: async (input) => {
     const result = await scrapSearchResults(input.query);
-
-    console.log(result);
 
     if (typeof result === "string") {
       return result;
