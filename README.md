@@ -10,13 +10,15 @@ With `micro-agi`, you can create complex systems of AI agents that work together
 
 ```jsx
 <Team>
-  <Agent role="designer">
-    <Task description="design landing page" />
-  </Agent>
-  <Agent role="frontend developer">
-    <Task description="develop landing page with react and tailwind" />
-    <Task description="publish to github" />
-  </Agent>
+  <Team>
+    <Agent role="designer">
+      <Task>Design landing page</Task>
+    </Agent>
+    <Agent role="frontend developer">
+      <Task>Develop landing page with React and Tailwind</Task>
+      <Task>Publish to GitHub</Task>
+    </Agent>
+  </Team>
 </Team>
 ```
 
