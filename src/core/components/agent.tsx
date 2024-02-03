@@ -10,6 +10,7 @@ import ChatAgent, { Message } from "../agents/chat-agent.js";
 import MrklAgent, { Tool } from "../agents/mrkl-agent.js";
 import ModelSelector from "../models/model-selector.js";
 import { TeamContext } from "./team.js";
+import { isSimilar } from "../utils/lavenshtein-distance.js";
 
 interface Messages {
   [conversationId: string]: Message[];
@@ -50,10 +51,26 @@ const Agent = async (
       {
         name: "agentGetContext",
         description:
-          "Use this tool to get the current context of the executing process. Might be helpful to understand what other team agents have done.",
-        callback: async () => {
+          "Get the current context of a team member of this team. If the role of the team member is 'Doctor', use that role. If the role of the team member is 'Scientist', use that role.",
+        inputDescription:
+          'a JSON structure that looks like { "role": "the role to ask for context about" }',
+        validateInput: (input) => typeof input.role === "string",
+        callback: async (input) => {
+
           const teamContext = getContext(TeamContext);
-          return JSON.stringify(teamContext.agentResults);
+          const role = input.role;
+          const threshold = 80;
+
+          if(!role) return ""
+
+          const concatenatedResults = teamContext.agentResults
+            .filter((agentResult) =>
+              isSimilar(agentResult.role, role, threshold)
+            )
+            .map((agentResult) => agentResult.result)
+            .join("\n");
+
+          return concatenatedResults || "";
         },
       },
     ] as Tool[],
@@ -96,8 +113,10 @@ const Agent = async (
       agentContext.tasks[id] = {
         id,
         status: "pending", // pending, success, error
-        addedAt: Date.now(),
         render: async () => await render(child),
+        result: "",
+        addedAt: Date.now(),
+        completedAt: 0,
       };
     }
   }
@@ -120,7 +139,7 @@ const Agent = async (
       break;
     }
 
-    const id = nanoid();
+    const agentRunId = nanoid();
     const previousResults = teamContext.agentResults
       .slice(0, index)
       .map((agentResult) => {
@@ -173,13 +192,12 @@ const Agent = async (
       </AgentContext.Provider>
     );
 
-    // Update task
     agentContext.tasks[task.id].status = "success";
     agentContext.tasks[task.id].result = result;
     agentContext.tasks[task.id].completedAt = Date.now();
 
     teamContext.agentResults.push({
-      id,
+      id: agentRunId,
       role,
       result: result,
       task: agentContext.tasks[task.id],

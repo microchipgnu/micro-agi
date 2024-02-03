@@ -10,7 +10,6 @@
     "outDir": "./dist",
     "jsx": "react-jsx",
     "jsxImportSource": "ai-jsx",
-    "moduleResolution": "node16",
     "module": "Node16",
     "resolveJsonModule": true,
     "declaration": true,
