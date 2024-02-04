@@ -23,7 +23,6 @@ export interface WikipediaQueryInput {
   query: string;
 }
 
-
 async function fetchSearchResults(query: string): Promise<SearchResults> {
   const baseUrl = "https://en.wikipedia.org/w/api.php";
   const searchParams = new URLSearchParams({
@@ -58,25 +57,20 @@ async function fetchPageDetails(page: string): Promise<Page> {
   return data.query.pages[pageId];
 }
 
-export const wikipediaSearch: Tool<
-  WikipediaQueryInput,
-  string
-> = {
+export const wikipediaSearch: Tool<WikipediaQueryInput, string> = {
   name: "WikipediaSearch",
   description:
     "A tool for interacting with and fetching data from the Wikipedia API.",
-  inputDescription: 'a JSON structure that looks like { "query": "a query to search" }',
+  inputDescription:
+    'a JSON structure that looks like { "query": "a query to search" }',
 
   validateInput: (input: WikipediaQueryInput): boolean => {
     return typeof input.query === "string" && input.query.trim().length > 0;
   },
 
-  callback: async (
-    input: WikipediaQueryInput
-  ): Promise<string> => {
+  callback: async (input: WikipediaQueryInput): Promise<string> => {
     const searchResults = await fetchSearchResults(input.query);
     const summaries: string[] = [];
-
 
     for (
       let i = 0;
@@ -96,6 +90,6 @@ export const wikipediaSearch: Tool<
       throw new Error("No good Wikipedia Search Result was found");
     }
 
-    return summaries.join("\n");
+    return summaries.join("\n").slice(0, 4000); // TODO: Make this configurable
   },
 };

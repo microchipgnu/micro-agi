@@ -1,5 +1,6 @@
 import * as AI from "ai-jsx";
 import { Completion } from "ai-jsx/core/completion";
+import { AgentContext } from "../components/agent.js";
 
 export interface Tool<Input = any, Output = any> {
   name: string;
@@ -10,7 +11,6 @@ export interface Tool<Input = any, Output = any> {
 }
 
 interface MrklAgentProps {
-  tools: Tool[];
   role?: string;
   goal?: string;
   backstory?: string;
@@ -176,21 +176,23 @@ const parseLlmResponse = (response: string) => {
 
 export const MrklAgent = async (
   {
-    tools,
     role,
     goal,
     backstory,
-    children: question,
+    children,
     maxIterations = MAX_ITERATIONS_DEFAULT,
   }: MrklAgentProps,
-  { render, logger }: AI.ComponentContext
+  { render, logger, getContext }: AI.ComponentContext
 ): Promise<AI.Node> => {
+  const agentContext = getContext(AgentContext);
+  const question = await render(children);
+
   let finalAnswer = "";
   let iteration = 0;
   let scratchPad = `${question}\n`;
+  const tools = agentContext.getCurrentTools();
 
   while (!finalAnswer && iteration < maxIterations) {
-
     // TODO: add support to chat completions to get access to better models
     const llmResponse = await render(
       <Completion stop={[OBSERVATION_PREFIX]}>

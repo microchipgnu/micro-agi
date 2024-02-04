@@ -34,14 +34,18 @@ export const ollamaChunkDecoder = (
   chunk: StreamedChunk,
   queryType: LlmQueryType
 ) => {
-  if (typeof chunk === "string") {
-    return chunk;
-  } else {
-    if (queryType === LLM_QUERY_TYPE.CHAT) {
-      return JSON.parse(new TextDecoder().decode(chunk)).message.content;
+  try {
+    if (typeof chunk === "string") {
+      return chunk;
     } else {
-      return JSON.parse(new TextDecoder().decode(chunk)).response;
+      if (queryType === LLM_QUERY_TYPE.CHAT) {
+        return JSON.parse(new TextDecoder().decode(chunk)).message.content;
+      } else {
+        return JSON.parse(new TextDecoder().decode(chunk)).response;
+      }
     }
+  } catch (error) {
+    return { done: true };
   }
 };
 

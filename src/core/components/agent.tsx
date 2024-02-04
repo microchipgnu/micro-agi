@@ -19,6 +19,9 @@ interface Messages {
 export const AgentContext = AI.createContext({
   tools: [] as Tool[],
   tasks: {} as Record<string, any>,
+  ephemeral: {} as Record<string, any>,
+  setEphemeralTools: (tools: Tool[]) => {},
+  getCurrentTools: (): Tool[] => [],
 });
 
 const Agent = async (
@@ -56,12 +59,11 @@ const Agent = async (
           'a JSON structure that looks like { "role": "the role to ask for context about" }',
         validateInput: (input) => typeof input.role === "string",
         callback: async (input) => {
-
           const teamContext = getContext(TeamContext);
           const role = input.role;
           const threshold = 80;
 
-          if(!role) return ""
+          if (!role) return "";
 
           const concatenatedResults = teamContext.agentResults
             .filter((agentResult) =>
@@ -75,6 +77,15 @@ const Agent = async (
       },
     ] as Tool[],
     tasks: {} as Record<string, any>,
+    ephemeral: {
+      tools: [] as Tool[],
+    },
+    setEphemeralTools: (tools: Tool[]) => {
+      agentContext.ephemeral.tools = tools;
+    },
+    getCurrentTools: () => {
+      return [...agentContext.tools, ...agentContext.ephemeral.tools];
+    },
   };
 
   const messages: Messages = {};
@@ -117,6 +128,7 @@ const Agent = async (
         result: "",
         addedAt: Date.now(),
         completedAt: 0,
+        children: child,
       };
     }
   }
@@ -150,20 +162,14 @@ const Agent = async (
     const result = await render(
       <AgentContext.Provider value={agentContext}>
         <ModelSelector provider={provider} model={model}>
-          {agentType === "none" && (
-            <>{(await task.render()) ? await task.render() : ""}</>
-          )}
+          {agentType === "none" && <>{await task.render()}</>}
 
           {agentType === "mrkl" && (
-            <MrklAgent
-              tools={agentContext.tools}
-              role={role}
-              goal={goal}
-              backstory={backstory}
-            >
-              {task.render ? `Current Task: ${await task.render()}` : ""}
+            <MrklAgent role={role} goal={goal} backstory={backstory}>
+              {/* {task.render ? `Current Task: ${await task.render()}` : ""}
               {context ? `Context\n-------\n ${context}` : ""}
-              {previousResults ? `${previousResults}` : ""}
+              {previousResults ? `${previousResults}` : ""} */}
+              <>{task.children}</>
             </MrklAgent>
           )}
 
@@ -191,6 +197,8 @@ const Agent = async (
         </ModelSelector>
       </AgentContext.Provider>
     );
+
+    agentContext.ephemeral.tools = [];
 
     agentContext.tasks[task.id].status = "success";
     agentContext.tasks[task.id].result = result;

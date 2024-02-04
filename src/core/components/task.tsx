@@ -11,13 +11,11 @@ const Task = async (
   { render, getContext }: AI.ComponentContext
 ): Promise<AI.Node> => {
   const agentContext = getContext(AgentContext);
+  agentContext.setEphemeralTools(tools);
 
   let taskContext = {
-    tools: [] as Tool[],
+    tools: tools || [],
   };
-
-  // TODO: manage agent tools
-  // add task specific tools to agentContext 
 
   const rendered = (
     <TaskContext.Provider value={taskContext}>

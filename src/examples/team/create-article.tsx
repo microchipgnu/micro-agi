@@ -2,6 +2,7 @@ import * as AI from "ai-jsx";
 import Agent from "../../core/components/agent.js";
 import Task from "../../core/components/task.js";
 import Team from "../../core/components/team.js";
+import { wikipediaSearch } from "../../presets/tools/wikipedia.js";
 
 const App = async () => {
   return (
@@ -13,7 +14,7 @@ const App = async () => {
         Your deep understanding of dinosaur anatomy, behavior, and evolutionary history is crucial for accurate and engaging content."
         agentType="mrkl"
       >
-        <Task>
+        <Task tools={[wikipediaSearch]}>
           Find and collect information about T-Rex. Return a few facts about it.
         </Task>
       </Agent>
