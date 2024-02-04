@@ -169,7 +169,7 @@ const Agent = async (
               {/* {task.render ? `Current Task: ${await task.render()}` : ""}
               {context ? `Context\n-------\n ${context}` : ""}
               {previousResults ? `${previousResults}` : ""} */}
-              <>{task.children}</>
+              {task.children}
             </MrklAgent>
           )}
 
