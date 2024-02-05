@@ -9,8 +9,9 @@ import { nanoid } from "nanoid";
 import ChatAgent, { Message } from "../agents/chat-agent.js";
 import MrklAgent, { Tool } from "../agents/mrkl-agent.js";
 import ModelSelector from "../models/model-selector.js";
-import { TeamContext } from "./team.js";
+import Parallel from "../tasks/parallel.js";
 import { isSimilar } from "../utils/lavenshtein-distance.js";
+import { TeamContext } from "./team.js";
 
 interface Messages {
   [conversationId: string]: Message[];
@@ -48,6 +49,7 @@ const Agent = async (
   },
   { render, getContext }: AI.ComponentContext
 ): Promise<AI.Node> => {
+
   const teamContext = getContext(TeamContext);
   let agentContext = {
     tools: [
@@ -133,86 +135,107 @@ const Agent = async (
     }
   }
 
-  for (
-    let index = 0, length = Object.keys(agentContext.tasks).length;
-    index < length;
-    index++
-  ) {
-    // Convert tasks object to an array of its values
-    const tasksArray = Object.values(agentContext.tasks);
+  const _sequentialAgent = async () => {
+    for (
+      let index = 0, length = Object.keys(agentContext.tasks).length;
+      index < length;
+      index++
+    ) {
+      // Convert tasks object to an array of its values
+      const tasksArray = Object.values(agentContext.tasks);
+      // Sort the array based on the 'addedAt' property
+      tasksArray.sort((a, b) => a.addedAt - b.addedAt);
+      // Find the first task with a status of "pending"
+      const task = tasksArray.find((task) => task.status === "pending");
 
-    // Sort the array based on the 'addedAt' property
-    tasksArray.sort((a, b) => a.addedAt - b.addedAt);
+      if (!task) {
+        break;
+      }
+      const agentRunId = nanoid();
 
-    // Find the first task with a status of "pending"
-    const task = tasksArray.find((task) => task.status === "pending");
+      const isParallel = task?.children?.tag === Parallel;
 
-    if (!task) {
-      break;
+      if (isParallel && agentType !== "mrkl") {
+        throw new Error(
+          "Parallel tasks can only be used with the 'mrkl' agent type."
+        );
+      }
+
+      const result = await render(
+        <AgentContext.Provider value={agentContext}>
+          <ModelSelector provider={provider} model={model}>
+            {agentType === "none" && <>{await task.render()}</>}
+
+            {agentType === "mrkl" &&
+              (isParallel ? (
+                await Promise.all(
+                  task.children.props.children.map(async (child: any) => {
+                    return (
+                      <MrklAgent role={role} goal={goal} backstory={backstory}>
+                        {child}
+                      </MrklAgent>
+                    );
+                  })
+                )
+              ) : (
+                <MrklAgent role={role} goal={goal} backstory={backstory}>
+                  {task.children}
+                </MrklAgent>
+              ))}
+
+            {agentType === "chat" && (
+              <ChatAgent
+                conversationId="conversation-1"
+                memoryManager={{
+                  fetchHistory: handleFetchHistory,
+                  saveHistory: handleSaveHistory,
+                }}
+              >
+                {messages?.["conversation-1"]?.map((msg) => {
+                  switch (msg.role) {
+                    case "user":
+                      return <UserMessage>{msg.content}</UserMessage>;
+                    case "assistant":
+                      return <AssistantMessage>{msg.content}</AssistantMessage>;
+                    case "system":
+                      return <SystemMessage>{msg.content}</SystemMessage>;
+                  }
+                })}
+                <UserMessage>{await task.render()}</UserMessage>
+              </ChatAgent>
+            )}
+          </ModelSelector>
+        </AgentContext.Provider>
+      );
+      
+      // clear ephemeral tools after task ran
+      agentContext.ephemeral.tools = [];
+
+      agentContext.tasks[task.id].status = "success";
+      agentContext.tasks[task.id].result = result;
+      agentContext.tasks[task.id].completedAt = Date.now();
+
+      teamContext.agentResults.push({
+        id: agentRunId,
+        role,
+        result: result,
+        task: agentContext.tasks[task.id],
+      });
     }
 
-    const agentRunId = nanoid();
-    const previousResults = teamContext.agentResults
-      .slice(0, index)
-      .map((agentResult) => {
-        return agentResult.result;
-      })
-      .toString();
+    return JSON.stringify(agentContext);
+  };
 
-    const result = await render(
-      <AgentContext.Provider value={agentContext}>
-        <ModelSelector provider={provider} model={model}>
-          {agentType === "none" && <>{await task.render()}</>}
+  const _hierarchicalAgent = async () => {
+    throw new Error("Hierarchical agents are not yet implemented");
+  };
 
-          {agentType === "mrkl" && (
-            <MrklAgent role={role} goal={goal} backstory={backstory}>
-              {/* {task.render ? `Current Task: ${await task.render()}` : ""}
-              {context ? `Context\n-------\n ${context}` : ""}
-              {previousResults ? `${previousResults}` : ""} */}
-              {task.children}
-            </MrklAgent>
-          )}
-
-          {agentType === "chat" && (
-            <ChatAgent
-              conversationId="conversation-1"
-              memoryManager={{
-                fetchHistory: handleFetchHistory,
-                saveHistory: handleSaveHistory,
-              }}
-            >
-              {messages?.["conversation-1"]?.map((msg) => {
-                switch (msg.role) {
-                  case "user":
-                    return <UserMessage>{msg.content}</UserMessage>;
-                  case "assistant":
-                    return <AssistantMessage>{msg.content}</AssistantMessage>;
-                  case "system":
-                    return <SystemMessage>{msg.content}</SystemMessage>;
-                }
-              })}
-              <UserMessage>{await task.render()}</UserMessage>
-            </ChatAgent>
-          )}
-        </ModelSelector>
-      </AgentContext.Provider>
-    );
-
-    agentContext.ephemeral.tools = [];
-
-    agentContext.tasks[task.id].status = "success";
-    agentContext.tasks[task.id].result = result;
-    agentContext.tasks[task.id].completedAt = Date.now();
-
-    teamContext.agentResults.push({
-      id: agentRunId,
-      role,
-      result: result,
-      task: agentContext.tasks[task.id],
-    });
-  }
-
-  return teamContext.agentResults[teamContext.agentResults.length - 1].result;
+  return (
+    <>
+      {teamContext.process === "sequential" && (await _sequentialAgent())}
+      {teamContext.process === "hierarchical" && (await _hierarchicalAgent())}
+    </>
+  );
 };
 
 export default Agent;

@@ -11,6 +11,7 @@ export interface Tool<Input = any, Output = any> {
 }
 
 interface MrklAgentProps {
+  tools?: Tool[];
   role?: string;
   goal?: string;
   backstory?: string;
@@ -176,6 +177,7 @@ const parseLlmResponse = (response: string) => {
 
 export const MrklAgent = async (
   {
+    tools = [],
     role,
     goal,
     backstory,
@@ -190,13 +192,13 @@ export const MrklAgent = async (
   let finalAnswer = "";
   let iteration = 0;
   let scratchPad = `${question}\n`;
-  const tools = agentContext.getCurrentTools();
+  const _tools = [...agentContext.getCurrentTools(), ...tools];
 
   while (!finalAnswer && iteration < maxIterations) {
     // TODO: add support to chat completions to get access to better models
     const llmResponse = await render(
       <Completion stop={[OBSERVATION_PREFIX]}>
-        {buildPrompt(tools, role, goal, backstory)}
+        {buildPrompt(_tools, role, goal, backstory)}
         {scratchPad}
       </Completion>
     );
@@ -210,7 +212,7 @@ export const MrklAgent = async (
 
       if (parsedResponse.type === "action" && parsedResponse.actions) {
         for (const action of parsedResponse.actions) {
-          const toolToUse = tools.find((tool) => tool.name === action.tool);
+          const toolToUse = _tools.find((tool) => tool.name === action.tool);
 
           if (toolToUse) {
             let toolResult = "";
