@@ -7,11 +7,25 @@ export const TaskContext = AI.createContext({
 });
 
 const Task = async (
-  { children, tools = [] }: { children?: AI.Node; tools?: Tool[] },
+  {
+    children,
+    tools = [],
+    onStart,
+    onDone,
+  }: {
+    children?: AI.Node;
+    tools?: Tool[];
+    onStart?: () => Promise<void>;
+    onDone?: () => Promise<void>;
+  },
   { render, getContext }: AI.ComponentContext
 ): Promise<AI.Node> => {
   const agentContext = getContext(AgentContext);
   agentContext.setEphemeralTools(tools);
+
+  if (onStart) {
+    await onStart();
+  }
 
   let taskContext = {
     tools: tools || [],

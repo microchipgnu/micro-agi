@@ -46,7 +46,6 @@ const Team = async (
       if (child && child.tag === Agent) {
         await renderContext.render(child);
       } else if (child && child.tag === Parallel) {
-        console.log(child)
         await Promise.all(
           child.props.children.map(async (child: any) => {
             return await renderContext.render(child);
@@ -64,17 +63,7 @@ const Team = async (
     children: AI.Node,
     renderContext: AI.RenderContext
   ) => {
-    const teamContext = renderContext.getContext(TeamContext);
-    const flattened = [children].flat(Infinity as 1);
-
-    for (let index = 0; index < flattened.length; index++) {
-      const child = flattened[index];
-      if (child) {
-        await renderContext.render(child);
-      }
-    }
-
-    return JSON.stringify(teamContext);
+    throw new Error("Hierarchical team not yet implemented");
   };
 
   return (

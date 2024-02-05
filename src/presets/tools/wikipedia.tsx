@@ -81,7 +81,7 @@ export const wikipediaSearch: Tool<WikipediaQueryInput, string> = {
       const pageDetails = await fetchPageDetails(page);
 
       if (pageDetails) {
-        const summary = `Page: ${page}\nSummary: ${pageDetails.extract}`;
+        const summary = `${pageDetails.extract}`;
         summaries.push(summary);
       }
     }
@@ -90,6 +90,6 @@ export const wikipediaSearch: Tool<WikipediaQueryInput, string> = {
       throw new Error("No good Wikipedia Search Result was found");
     }
 
-    return summaries.join("\n").slice(0, 4000); // TODO: Make this configurable
+    return `"""${summaries.join("\n").slice(0, 4000).replace(/\n/g, "")}"""`; // TODO: Make this configurable
   },
 };

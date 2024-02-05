@@ -79,19 +79,15 @@ export const browseWebsiteTool: Tool<{ url: string }, string> = {
   validateInput: (input) =>
     typeof input.url === "string" && input.url.startsWith("http"),
   callback: async (input) => {
-    
     const websiteText = await scrapText(input.url);
-
     const summary = await renderContext.render(
-      <OpenRouter model={"mistralai/mistral-7b-instruct"} maxTokens={5000}>
-        <Completion>
-          Summarize:
-          {websiteText}
-        </Completion>
-      </OpenRouter>
+      <Completion>
+        Summarize:
+        {websiteText}
+      </Completion>
     );
 
-    return `Website Content Summary:\n ${"summary"}\n\nLinks:\n`;
+    return `Website Content Summary:\n ${summary}\n\nLinks:\n`;
   },
 };
 
@@ -108,6 +104,6 @@ export const searchInternetTool: Tool<{ query: string }, string> = {
       return result;
     }
 
-    return `Search results:\n\n${result.slice(0, 10).join("\n")}`;
+    return `${JSON.stringify(result.slice(0, 5).join("\n"))}`;
   },
 };

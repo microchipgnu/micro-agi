@@ -21,6 +21,7 @@ export async function queryOllama(
   input: any,
   logger: AI.ComponentContext["logger"]
 ) {
+
   return doQueryLlm(
     `${AI_JSX_OLLAMA_API_BASE}${
       queryType === LLM_QUERY_TYPE.CHAT ? "/chat" : "/generate"
@@ -45,7 +46,7 @@ export const ollamaChunkDecoder = (
       }
     }
   } catch (error) {
-    return { done: true };
+    throw new Error(`Error decoding Ollama chunk: ${error}`);
   }
 };
 
@@ -66,7 +67,7 @@ export const Ollama = ({
     <ModelProvider
       queryLlm={queryLlm ?? queryOllama}
       chunkDecoder={chunkDecoder ?? ollamaChunkDecoder}
-      model={model ?? "llama2"}
+      model={model ?? "mistral"}
       {...defaults}
     >
       {children}

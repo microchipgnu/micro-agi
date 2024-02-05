@@ -215,6 +215,10 @@ const Agent = async (
       agentContext.tasks[task.id].result = result;
       agentContext.tasks[task.id].completedAt = Date.now();
 
+      if (task?.children?.props?.onDone) {
+        await task?.children?.props?.onDone();
+      }
+
       teamContext.agentResults.push({
         id: agentRunId,
         role,

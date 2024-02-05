@@ -62,7 +62,6 @@ ${ACTION_PREFIX} the action to take, should be one of [${tools
   .map((tool) => tool.name)
   .join(",")}]
 ${ACTION_INPUT_PREFIX} the input to the action
-        Observation: the result of the action
 ${OBSERVATION_PREFIX} the result of the action
 
 ... (this Thought/Action/Action Input/Observation can repeat N times)
@@ -199,6 +198,7 @@ export const MrklAgent = async (
     const llmResponse = await render(
       <Completion stop={[OBSERVATION_PREFIX]}>
         {buildPrompt(_tools, role, goal, backstory)}
+        {"\n\n"}
         {scratchPad}
       </Completion>
     );
@@ -224,7 +224,10 @@ export const MrklAgent = async (
             } catch (error) {
               console.error(error);
             }
-            scratchPad += `${OBSERVATION_PREFIX} ${toolResult}\n`;
+
+            if (toolResult) {
+              scratchPad += `${OBSERVATION_PREFIX} ${toolResult}\n`;
+            }
           } else {
             scratchPad += `${OBSERVATION_PREFIX} DO NOT REPEAT "${action.tool}"\n`;
           }

@@ -7,6 +7,8 @@
   "scripts": {
     "typecheck": "tsc",
     "run:create-article": "bun run typecheck && bun run ./src/examples/team/create-article.tsx",
+    "run:search-internet": "bun run typecheck && bun run ./src/examples/team/search-internet.tsx",
+    "run:search-internet:debug": "bun run typecheck && AIJSX_LOG=debug bun run ./src/examples/team/search-internet.tsx",
     "run:create-article:debug": "bun run typecheck && AIJSX_LOG=debug bun run ./src/examples/team/create-article.tsx",
     "build": "rm -rf dist && bun run typecheck && cp tsconfig.json dist/ && cp package.json dist/",
     "build:publish": "bun run build && npm publish -p ./dist",
