@@ -14,11 +14,11 @@ const ModelSelector = ({
 }): AI.Node => {
   switch (provider) {
     case "ollama":
-      return <Ollama model={model}>{children}</Ollama>;
+      return <Ollama model={model} temperature={0.4}>{children}</Ollama>;
 
     case "openai":
       return (
-        <OpenAIChatModel model="gpt-3.5-turbo-1106">{children}</OpenAIChatModel>
+        <OpenAIChatModel model="gpt-4-1106-preview">{children}</OpenAIChatModel>
       );
 
     case "open-router":

@@ -1,8 +1,11 @@
 import * as AI from "ai-jsx";
-import { Completion } from "ai-jsx/core/completion";
+import {
+  ChatCompletion,
+  SystemMessage,
+  UserMessage
+} from "ai-jsx/core/completion";
 import { JSDOM } from "jsdom";
 import { Tool } from "../../core/agents/mrkl-agent.js";
-import { OpenRouter } from "../../core/providers/open-router.js";
 
 const renderContext = AI.createRenderContext({});
 
@@ -80,14 +83,18 @@ export const browseWebsiteTool: Tool<{ url: string }, string> = {
     typeof input.url === "string" && input.url.startsWith("http"),
   callback: async (input) => {
     const websiteText = await scrapText(input.url);
+
+    // TODO: this will fail without an openai key. Need to figure this out
     const summary = await renderContext.render(
-      <Completion>
-        Summarize:
-        {websiteText}
-      </Completion>
+      <ChatCompletion>
+        <SystemMessage>
+          You are a helpful assistant. Summarize the content of the website.
+        </SystemMessage>
+        <UserMessage>{websiteText}</UserMessage>
+      </ChatCompletion>
     );
 
-    return `Website Content Summary:\n ${summary}\n\nLinks:\n`;
+    return `${summary}`;
   },
 };
 

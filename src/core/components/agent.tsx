@@ -23,6 +23,7 @@ export const AgentContext = AI.createContext({
   ephemeral: {} as Record<string, any>,
   setEphemeralTools: (tools: Tool[]) => {},
   getCurrentTools: (): Tool[] => [],
+  context: "",
 });
 
 const Agent = async (
@@ -49,14 +50,13 @@ const Agent = async (
   },
   { render, getContext }: AI.ComponentContext
 ): Promise<AI.Node> => {
-
   const teamContext = getContext(TeamContext);
+
   let agentContext = {
     tools: [
       {
         name: "agentGetContext",
-        description:
-          "Get the current context of a team member of this team. If the role of the team member is 'Doctor', use that role. If the role of the team member is 'Scientist', use that role.",
+        description: `Get the current context of a team member of this team. Available roles: ${teamContext.getAgents()} `,
         inputDescription:
           'a JSON structure that looks like { "role": "the role to ask for context about" }',
         validateInput: (input) => typeof input.role === "string",
@@ -88,6 +88,7 @@ const Agent = async (
     getCurrentTools: () => {
       return [...agentContext.tools, ...agentContext.ephemeral.tools];
     },
+    context: "",
   };
 
   const messages: Messages = {};
@@ -171,14 +172,24 @@ const Agent = async (
                 await Promise.all(
                   task.children.props.children.map(async (child: any) => {
                     return (
-                      <MrklAgent role={role} goal={goal} backstory={backstory}>
+                      <MrklAgent
+                        role={role}
+                        goal={goal}
+                        backstory={backstory}
+                        maxIterations={50}
+                      >
                         {child}
                       </MrklAgent>
                     );
                   })
                 )
               ) : (
-                <MrklAgent role={role} goal={goal} backstory={backstory}>
+                <MrklAgent
+                  role={role}
+                  goal={goal}
+                  backstory={backstory}
+                  maxIterations={50}
+                >
                   {task.children}
                 </MrklAgent>
               ))}
@@ -207,7 +218,7 @@ const Agent = async (
           </ModelSelector>
         </AgentContext.Provider>
       );
-      
+
       // clear ephemeral tools after task ran
       agentContext.ephemeral.tools = [];
 

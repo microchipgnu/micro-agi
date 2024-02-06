@@ -13,6 +13,7 @@ const App = async () => {
         backstory="With a background in competitive programming and software development, 
                you excel at designing problems that test algorithmic thinking and coding skills. 
                You understand the nuances of different programming paradigms and data structures."
+        agentType="mrkl"
       >
         <Task>
           Develop a set of unique coding problems, ranging from easy to hard
@@ -26,11 +27,11 @@ const App = async () => {
         backstory="As an experienced software engineer and educator, 
                you have a deep understanding of algorithms and efficiency. 
                You are skilled at explaining complex concepts in a clear, concise manner."
+        agentType="mrkl"
       >
         <Task>
-          For each coding problem created by the Problem Designer, develop an
-          optimal solution. Write clear explanations and provide a complexity
-          analysis for each solution paired with the problem.
+          Write clear explanations and provide a complexity
+          analysis for each solution paired with the problem for each problem made by the Problem Designer.
         </Task>
       </Agent>
     </Team>

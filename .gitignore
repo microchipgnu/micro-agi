@@ -24,6 +24,9 @@ chrome-user-data
 *.swp
 *.swo
 
+.env
+.env.local
+
 dist
 
 packages/react-devtools-core/dist

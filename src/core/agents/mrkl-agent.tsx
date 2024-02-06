@@ -1,5 +1,10 @@
 import * as AI from "ai-jsx";
-import { Completion } from "ai-jsx/core/completion";
+import {
+  AssistantMessage,
+  ChatCompletion,
+  Completion,
+  SystemMessage
+} from "ai-jsx/core/completion";
 import { AgentContext } from "../components/agent.js";
 
 export interface Tool<Input = any, Output = any> {
@@ -17,6 +22,7 @@ interface MrklAgentProps {
   backstory?: string;
   children: AI.Node;
   maxIterations?: number;
+  accumulateObservations?: boolean;
 }
 
 interface ParsedLlmResponse {
@@ -37,8 +43,7 @@ const buildPrompt = (
   role = "assistant",
   goal = "answer the question",
   backstory = "no backstory"
-) => `Answer the following questions as best you can.
-
+) => `
 You are ${role}.
 ${backstory}
 
@@ -68,10 +73,10 @@ ${OBSERVATION_PREFIX} the result of the action
 
 When you have a response for your task, or if you do not need to use a tool, you MUST use the format:
 
-${THOUGHT_PREFIX}: Do I need to use a tool? No
+${THOUGHT_PREFIX} Do I need to use a tool? No
 ${FINAL_ANSWER_PREFIX} the final answer to the original input question
 
-Begin! This is VERY important to you, your job depends on it!
+Begin! Answer the following questions as best you can. This is VERY important to you, your job depends on it!
 `;
 
 const parseLlmResponseForTool = (response: string): ParsedLlmResponse => {
@@ -135,7 +140,7 @@ const parseLlmResponseForFinalAnswer = (response: string) => {
   );
 };
 
-const parseLlmResponse = (response: string) => {
+const parseLlmResponse = async (response: string, render: any) => {
   const actionRegex =
     /Action\s*:\s*(.*?)\s*Action\s*Input\s*:\s*(.*?)(?=(Action\s*:|$))/gs;
   const actions = [];
@@ -148,27 +153,44 @@ const parseLlmResponse = (response: string) => {
       let actionInput;
 
       if (actionInputRaw.startsWith("{") && actionInputRaw.endsWith("}")) {
-        try {
-          actionInput = JSON.parse(actionInputRaw);
-        } catch (error) {
-          console.error("Error parsing action input as JSON:", error);
-          actionInput = actionInputRaw; // Use raw string as a fallback
+        async function parseJsonInput(input: string) {
+          try {
+            return JSON.parse(input);
+          } catch (error) {
+            console.error("Error parsing action input as JSON:", error);
+
+            // TODO: need a better solution for recovering errors of json parsing
+            const llmResponse = await render(
+              <Completion>
+                Given a JSON object that fails to parse due to syntax errors,
+                provide detailed steps and examples to identify and fix common
+                issues such as improper quotes, missing commas, extra commas,
+                unescaped special characters, and incorrect nesting. Focus on
+                common JSON formatting rules and error identification
+                techniques. Correct the following JSON object and output the
+                corrected JSON string only.
+                {input}
+              </Completion>
+            );
+
+            return parseJsonInput(llmResponse);
+          }
         }
-      } else {
-        actionInput = actionInputRaw;
+
+        actionInput = await parseJsonInput(actionInputRaw);
       }
 
       actions.push({ type: "action", tool: action, input: actionInput });
     }
   }
 
-  if (actions.length > 0) {
-    return { type: "action", actions };
-  }
-
   if (response.includes(FINAL_ANSWER_PREFIX)) {
     const finalAnswerText = response.split(FINAL_ANSWER_PREFIX)[1].trim();
     return { type: "finalAnswer", finalAnswer: finalAnswerText, actions };
+  }
+
+  if (actions.length > 0) {
+    return { type: "action", actions };
   }
 
   return { type: "unstructuredResponse", content: response, actions };
@@ -182,6 +204,7 @@ export const MrklAgent = async (
     backstory,
     children,
     maxIterations = MAX_ITERATIONS_DEFAULT,
+    accumulateObservations = false,
   }: MrklAgentProps,
   { render, logger, getContext }: AI.ComponentContext
 ): Promise<AI.Node> => {
@@ -190,33 +213,54 @@ export const MrklAgent = async (
 
   let finalAnswer = "";
   let iteration = 0;
-  let scratchPad = `${question}\n`;
+  let scratchPad = "";
   const _tools = [...agentContext.getCurrentTools(), ...tools];
 
   while (!finalAnswer && iteration < maxIterations) {
+    const prompt = `
+    ${buildPrompt(_tools, role, goal, backstory)}
+
+    ${
+      scratchPad &&
+      `The SCRATCHPAD contains the context you're working with! I only see what you return as "${FINAL_ANSWER_PREFIX}"
+      
+      You have ${
+        maxIterations - iteration
+      } iterations left to provide a final answer.
+      
+      Here is the SCRATCHPAD:\n----\n${scratchPad}\n`
+    }
+    `;
+
     // TODO: add support to chat completions to get access to better models
     const llmResponse = await render(
-      <Completion stop={[OBSERVATION_PREFIX]}>
-        {buildPrompt(_tools, role, goal, backstory)}
-        {"\n\n"}
-        {scratchPad}
-      </Completion>
+      <ChatCompletion stop={[OBSERVATION_PREFIX]}>
+        <SystemMessage>
+          {buildPrompt(_tools, role, goal, backstory)}
+        </SystemMessage>
+        <AssistantMessage>
+          {`Current task: ${question}\n`}
+          {scratchPad &&
+            `The SCRATCHPAD contains the context you're working with! I only see what you return as "${FINAL_ANSWER_PREFIX}"\nYou have ${
+              maxIterations - iteration
+            } iterations left to provide a final answer.\n Here is the SCRATCHPAD:\n----\n${scratchPad}\n`}
+        </AssistantMessage>
+      </ChatCompletion>
     );
 
     logger.debug({ type: "llmResponse", value: llmResponse });
 
     try {
-      const parsedResponse = parseLlmResponse(llmResponse);
+      const parsedResponse = await parseLlmResponse(llmResponse, render);
 
       logger.debug({ type: "parsedResponse", value: parsedResponse });
 
       if (parsedResponse.type === "action" && parsedResponse.actions) {
+        let toolResult = "";
         for (const action of parsedResponse.actions) {
           const toolToUse = _tools.find((tool) => tool.name === action.tool);
 
           if (toolToUse) {
-            let toolResult = "";
-
             try {
               toolResult = await toolToUse.callback(action.input);
 
@@ -226,15 +270,19 @@ export const MrklAgent = async (
             }
 
             if (toolResult) {
-              scratchPad += `${OBSERVATION_PREFIX} ${toolResult}\n`;
+              if (accumulateObservations) {
+                scratchPad += `${OBSERVATION_PREFIX} ${toolResult}\n`;
+              } else {
+                scratchPad = `${OBSERVATION_PREFIX} ${toolResult}\n`;
+              }
             }
           } else {
-            scratchPad += `${OBSERVATION_PREFIX} DO NOT REPEAT "${action.tool}"\n`;
+            // scratchPad += `${OBSERVATION_PREFIX} DO NOT USE AGAIN "${action.tool}"\n`;
           }
         }
       } else if (parsedResponse.type === "finalAnswer") {
         finalAnswer = parsedResponse.finalAnswer!;
-        return finalAnswer;
+        return <AssistantMessage>{finalAnswer}</AssistantMessage>;
       }
     } catch (error) {
       console.error(error);
@@ -245,7 +293,13 @@ export const MrklAgent = async (
     iteration++;
   }
 
-  return finalAnswer || "Unable to find an answer within the iteration limit.";
+  return (
+    <AssistantMessage>{finalAnswer}</AssistantMessage> || (
+      <AssistantMessage>
+        "Unable to find an answer within the iteration limit."
+      </AssistantMessage>
+    )
+  );
 };
 
 export default MrklAgent;

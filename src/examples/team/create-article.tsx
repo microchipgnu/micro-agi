@@ -14,25 +14,19 @@ const App = async () => {
         backstory="You are a renowned expert in paleontology with years of experience in studying dinosaur fossils.
         Your deep understanding of dinosaur anatomy, behavior, and evolutionary history is crucial for accurate and engaging content."
         agentType="mrkl"
+        model="mistral"
       >
-        <Parallel>
-          <Task tools={[wikipediaSearch]}>
-            Find and collect information about T-Rex. Return a few facts about
-            it.
-          </Task>
-          <Task tools={[wikipediaSearch]}>
-            Find and collect information about flying dinosaurs. Return a few
-            facts about it.
-          </Task>
-        </Parallel>
+        <Task tools={[wikipediaSearch]}>
+          Find and collect information about T-Rex. Return a few facts about it.
+        </Task>
       </Agent>
-
       <Agent
         role="Science Writer"
         goal="Craft an engaging and informative article about dinosaurs"
         backstory="You have a talent for making complex scientific topics accessible and exciting to a broad audience.
         Your writing skills are essential in translating the expert knowledge into a captivating article."
         agentType="mrkl"
+        model="mistral"
       >
         <Task>
           Write an informative article in the format of Markdown based on the

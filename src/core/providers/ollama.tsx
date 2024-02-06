@@ -21,12 +21,16 @@ export async function queryOllama(
   input: any,
   logger: AI.ComponentContext["logger"]
 ) {
+  const _input = {
+    ...input,
+    stream: false,
+  };
 
   return doQueryLlm(
     `${AI_JSX_OLLAMA_API_BASE}${
       queryType === LLM_QUERY_TYPE.CHAT ? "/chat" : "/generate"
     }`,
-    input,
+    _input,
     logger
   );
 }
