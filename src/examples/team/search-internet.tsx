@@ -6,6 +6,7 @@ import {
   browseWebsiteTool,
   searchInternetTool,
 } from "../../presets/tools/search-internet.js";
+import { writeFile } from "../../presets/tools/filesystem.js";
 
 const App = async () => {
   return (
@@ -40,6 +41,7 @@ const App = async () => {
           Search Expert. Your answer should include a markdown article about the
           topic.
         </Task>
+        <Task tools={[writeFile]}>Get the current article. Write it to a file.</Task>
       </Agent>
     </Team>
   );

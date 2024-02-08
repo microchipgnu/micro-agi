@@ -3,7 +3,7 @@ import {
   AssistantMessage,
   ChatCompletion,
   Completion,
-  SystemMessage
+  SystemMessage,
 } from "ai-jsx/core/completion";
 import { AgentContext } from "../components/agent.js";
 
@@ -243,7 +243,11 @@ export const MrklAgent = async (
           {scratchPad &&
             `The SCRATCHPAD contains the context you're working with! I only see what you return as "${FINAL_ANSWER_PREFIX}"\nYou have ${
               maxIterations - iteration
-            } iterations left to provide a final answer.\n Here is the SCRATCHPAD:\n----\n${scratchPad}\n`}
+            } iterations left to provide a final answer.\n Here is the SCRATCHPAD:\n----
+            """
+            ${scratchPad}
+            """
+          `}
         </AssistantMessage>
       </ChatCompletion>
     );
@@ -254,6 +258,10 @@ export const MrklAgent = async (
       const parsedResponse = await parseLlmResponse(llmResponse, render);
 
       logger.debug({ type: "parsedResponse", value: parsedResponse });
+
+      if (parsedResponse.type === "unstructuredResponse" && parsedResponse.content) {
+        scratchPad = `${OBSERVATION_PREFIX} ${parsedResponse.content}\n`;
+      }
 
       if (parsedResponse.type === "action" && parsedResponse.actions) {
         let toolResult = "";
@@ -275,12 +283,26 @@ export const MrklAgent = async (
               } else {
                 scratchPad = `${OBSERVATION_PREFIX} ${toolResult}\n`;
               }
+            } else {
+              scratchPad += `${OBSERVATION_PREFIX} DO NOT USE AGAIN "${action.tool}"\n`;
             }
           } else {
             // scratchPad += `${OBSERVATION_PREFIX} DO NOT USE AGAIN "${action.tool}"\n`;
           }
         }
       } else if (parsedResponse.type === "finalAnswer") {
+        // TODO: run through all actions and then return final answer
+        for (const action of parsedResponse.actions) {
+          const toolToUse = _tools.find((tool) => tool.name === action.tool);
+          if (toolToUse) {
+            try {
+              await toolToUse.callback(action.input);
+            } catch (error) {
+              console.error(error);
+            }
+          }
+        }
+
         finalAnswer = parsedResponse.finalAnswer!;
         return <AssistantMessage>{finalAnswer}</AssistantMessage>;
       }
@@ -296,7 +318,7 @@ export const MrklAgent = async (
   return (
     <AssistantMessage>{finalAnswer}</AssistantMessage> || (
       <AssistantMessage>
-        "Unable to find an answer within the iteration limit."
+        Unable to find an answer within the iteration limit.
       </AssistantMessage>
     )
   );

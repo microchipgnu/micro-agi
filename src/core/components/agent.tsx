@@ -65,7 +65,7 @@ const Agent = async (
           const role = input.role;
           const threshold = 80;
 
-          if (!role) return "";
+          if (!role) return `"${role}" does not exist!`;
 
           const concatenatedResults = teamContext.agentResults
             .filter((agentResult) =>
@@ -74,7 +74,9 @@ const Agent = async (
             .map((agentResult) => agentResult.result)
             .join("\n");
 
-          return concatenatedResults || "";
+          return concatenatedResults
+            ? `${role} has the following context \n-----\n ${concatenatedResults}`
+            : `No context found for ${role}`;
         },
       },
     ] as Tool[],

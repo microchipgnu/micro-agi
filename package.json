@@ -8,7 +8,8 @@
     "typecheck": "tsc",
     "run:create-article": "bun run typecheck && bun run ./src/examples/team/create-article.tsx",
     "run:search-internet": "bun run typecheck && bun run ./src/examples/team/search-internet.tsx",
-    "run:search-internet:debug": "bun run typecheck && AIJSX_LOG=debug bun run ./src/examples/team/search-internet.tsx",
+    "run:search-internet:debug": "bun run typecheck && AIJSX_LOG=debug bun run ./src/examples/team/search-internet.tsx | bunx pino-pretty",
+    "run:write-file:debug": "bun run typecheck && AIJSX_LOG=debug bun run ./src/examples/team/write-file.tsx | bunx pino-pretty",
     "run:create-article:debug": "bun run typecheck && AIJSX_LOG=debug bun run ./src/examples/team/create-article.tsx",
     "build": "rm -rf dist && bun run typecheck && cp tsconfig.json dist/ && cp package.json dist/",
     "build:publish": "bun run build && npm publish -p ./dist",
@@ -25,6 +26,7 @@
   },
   "devDependencies": {
     "@tsconfig/node18": "^2.0.1",
+    "@types/bun": "^1.0.5",
     "@types/jest": "^29.5.12",
     "@types/jsdom": "^21.1.6",
     "@types/lodash": "^4.14.202",
