@@ -18,7 +18,7 @@ const ModelSelector = ({
 
     case "openai":
       return (
-        <OpenAIChatModel model="gpt-4-1106-preview">{children}</OpenAIChatModel>
+        <OpenAIChatModel model="gpt-4-1106-preview" temperature={0.4}>{children}</OpenAIChatModel>
       );
 
     case "open-router":

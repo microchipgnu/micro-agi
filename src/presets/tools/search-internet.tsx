@@ -102,7 +102,7 @@ export const searchInternetTool: Tool<{ query: string }, string> = {
   name: "Search Internet",
   description: "Performs an internet search for the given query.",
   inputDescription:
-    'a JSON structure that looks like { "query": "the query to search for" }',
+    'a stringified JSON that looks like { "query": "the query to search for" }',
   validateInput: (input) => typeof input.query === "string",
   callback: async (input) => {
     const result = await scrapSearchResults(input.query);
@@ -111,6 +111,6 @@ export const searchInternetTool: Tool<{ query: string }, string> = {
       return result;
     }
 
-    return `${JSON.stringify(result.slice(0, 5).join("\n"))}`;
+    return `Search results: ${JSON.stringify(result.slice(0, 5).join("\n"))}`;
   },
 };

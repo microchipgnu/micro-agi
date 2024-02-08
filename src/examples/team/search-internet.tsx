@@ -16,7 +16,9 @@ const App = async () => {
         goal="Gather links and information about a topic"
         backstory="You are a professional internet search expert with years of experience in search engines and information retrieval."
         agentType="mrkl"
-        model="openhermes"
+        // model="mistral"
+        model="gpt-4-1106-preview"
+        provider="openai"
         // model="nousresearch/nous-hermes-2-mixtral-8x7b-dpo"
         // provider="open-router"
       >
@@ -24,8 +26,9 @@ const App = async () => {
           Find links about Apple Vision Pro. Your final answer should contain a
           list of links and a summary of the content.
         </Task>
+        <Task tools={[writeFile]}>Get Internet Search Expert context and once you do and WRITE the links to a file.</Task>
       </Agent>
-      <Agent
+      {/* <Agent
         role="Writer"
         goal="Craft an engaging and informative article"
         backstory="You have a talent for making topics accessible and exciting to a broad audience.
@@ -36,13 +39,13 @@ const App = async () => {
         // provider="open-router"
       >
         <Task tools={[browseWebsiteTool]}>
+          Open the links provided in the context of the Internet Search Expert.
           Write an informative article in the format of Markdown based on the
-          Internet Search Expert research. Get the current context Internet
-          Search Expert. Your answer should include a markdown article about the
+          Internet Search Expert research. Your answer should include a markdown article about the
           topic.
         </Task>
         <Task tools={[writeFile]}>Get the current article. Write it to a file.</Task>
-      </Agent>
+      </Agent> */}
     </Team>
   );
 };

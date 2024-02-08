@@ -52,7 +52,6 @@ Your personal goal is: ${goal}
 
 TOOLS:
 ------
-
 You have access to the following tools:
 ${tools.map((tool) => {
   return `${tool.name} - ${tool.description} - for this tool input MUST be ${
@@ -71,12 +70,12 @@ ${OBSERVATION_PREFIX} the result of the action
 
 ... (this Thought/Action/Action Input/Observation can repeat N times)
 
-When you have a response for your task, or if you do not need to use a tool, you MUST use the format:
+When you have a response for your task, or if you DO NOT need to use a tool, you MUST use the format:
 
 ${THOUGHT_PREFIX} Do I need to use a tool? No
 ${FINAL_ANSWER_PREFIX} the final answer to the original input question
 
-Begin! Answer the following questions as best you can. This is VERY important to you, your job depends on it!
+Begin! Solve the following tasks as best you can. This is VERY important to you, your job depends on it!
 `;
 
 const parseLlmResponseForTool = (response: string): ParsedLlmResponse => {
@@ -209,7 +208,7 @@ export const MrklAgent = async (
   { render, logger, getContext }: AI.ComponentContext
 ): Promise<AI.Node> => {
   const agentContext = getContext(AgentContext);
-  const question = await render(children);
+  const task = await render(children);
 
   let finalAnswer = "";
   let iteration = 0;
@@ -237,9 +236,9 @@ export const MrklAgent = async (
       <ChatCompletion stop={[OBSERVATION_PREFIX]}>
         <SystemMessage>
           {buildPrompt(_tools, role, goal, backstory)}
+          {`Current task: ${task}\n`}
         </SystemMessage>
         <AssistantMessage>
-          {`Current task: ${question}\n`}
           {scratchPad &&
             `The SCRATCHPAD contains the context you're working with! I only see what you return as "${FINAL_ANSWER_PREFIX}"\nYou have ${
               maxIterations - iteration
@@ -259,8 +258,11 @@ export const MrklAgent = async (
 
       logger.debug({ type: "parsedResponse", value: parsedResponse });
 
-      if (parsedResponse.type === "unstructuredResponse" && parsedResponse.content) {
-        scratchPad = `${OBSERVATION_PREFIX} ${parsedResponse.content}\n`;
+      if (
+        parsedResponse.type === "unstructuredResponse" &&
+        parsedResponse.content
+      ) {
+        scratchPad = `${OBSERVATION_PREFIX} ${parsedResponse.content}`;
       }
 
       if (parsedResponse.type === "action" && parsedResponse.actions) {
@@ -279,9 +281,9 @@ export const MrklAgent = async (
 
             if (toolResult) {
               if (accumulateObservations) {
-                scratchPad += `${OBSERVATION_PREFIX} ${toolResult}\n`;
+                scratchPad += `${OBSERVATION_PREFIX} tool used "${action.tool}"\n${OBSERVATION_PREFIX} ${toolResult}\n`
               } else {
-                scratchPad = `${OBSERVATION_PREFIX} ${toolResult}\n`;
+                scratchPad = `${OBSERVATION_PREFIX} tool used "${action.tool}"\n${OBSERVATION_PREFIX} ${toolResult}\n`;
               }
             } else {
               scratchPad += `${OBSERVATION_PREFIX} DO NOT USE AGAIN "${action.tool}"\n`;
