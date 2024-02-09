@@ -4,6 +4,7 @@ import {
   ChatCompletion,
   Completion,
   SystemMessage,
+  UserMessage,
 } from "ai-jsx/core/completion";
 import { AgentContext } from "../components/agent.js";
 
@@ -160,16 +161,13 @@ const parseLlmResponse = async (response: string, render: any) => {
 
             // TODO: need a better solution for recovering errors of json parsing
             const llmResponse = await render(
-              <Completion>
-                Given a JSON object that fails to parse due to syntax errors,
-                provide detailed steps and examples to identify and fix common
-                issues such as improper quotes, missing commas, extra commas,
-                unescaped special characters, and incorrect nesting. Focus on
-                common JSON formatting rules and error identification
-                techniques. Correct the following JSON object and output the
-                corrected JSON string only.
-                {input}
-              </Completion>
+              <ChatCompletion>
+                <UserMessage>
+                  Correct the following JSON object and output the
+                  corrected JSON string only.
+                  {input}
+                </UserMessage>
+              </ChatCompletion>
             );
 
             return parseJsonInput(llmResponse);
@@ -218,7 +216,7 @@ export const MrklAgent = async (
   while (!finalAnswer && iteration < maxIterations) {
     const prompt = `
     ${buildPrompt(_tools, role, goal, backstory)}
-
+    Current task: ${task}
     ${
       scratchPad &&
       `The SCRATCHPAD contains the context you're working with! I only see what you return as "${FINAL_ANSWER_PREFIX}"
@@ -238,7 +236,7 @@ export const MrklAgent = async (
           {buildPrompt(_tools, role, goal, backstory)}
           {`Current task: ${task}\n`}
         </SystemMessage>
-        <AssistantMessage>
+        <UserMessage>
           {scratchPad &&
             `The SCRATCHPAD contains the context you're working with! I only see what you return as "${FINAL_ANSWER_PREFIX}"\nYou have ${
               maxIterations - iteration
@@ -247,7 +245,7 @@ export const MrklAgent = async (
             ${scratchPad}
             """
           `}
-        </AssistantMessage>
+        </UserMessage>
       </ChatCompletion>
     );
 
@@ -262,7 +260,7 @@ export const MrklAgent = async (
         parsedResponse.type === "unstructuredResponse" &&
         parsedResponse.content
       ) {
-        scratchPad = `${OBSERVATION_PREFIX} ${parsedResponse.content}`;
+        scratchPad = `${OBSERVATION_PREFIX} ${JSON.stringify(parsedResponse)}`;
       }
 
       if (parsedResponse.type === "action" && parsedResponse.actions) {
@@ -281,7 +279,7 @@ export const MrklAgent = async (
 
             if (toolResult) {
               if (accumulateObservations) {
-                scratchPad += `${OBSERVATION_PREFIX} tool used "${action.tool}"\n${OBSERVATION_PREFIX} ${toolResult}\n`
+                scratchPad += `${OBSERVATION_PREFIX} tool used "${action.tool}"\n${OBSERVATION_PREFIX} ${toolResult}\n`;
               } else {
                 scratchPad = `${OBSERVATION_PREFIX} tool used "${action.tool}"\n${OBSERVATION_PREFIX} ${toolResult}\n`;
               }

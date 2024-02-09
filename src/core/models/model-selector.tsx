@@ -1,7 +1,6 @@
 import * as AI from "ai-jsx";
+import { ChatProvider } from "ai-jsx/core/completion";
 import { OpenAIChatModel } from "ai-jsx/lib/openai";
-import { Ollama } from "../providers/ollama.js";
-import { OpenRouter } from "../providers/open-router.js";
 
 const ModelSelector = ({
   children,
@@ -14,15 +13,25 @@ const ModelSelector = ({
 }): AI.Node => {
   switch (provider) {
     case "ollama":
-      return <Ollama model={model} temperature={0.4}>{children}</Ollama>;
+      return (
+        <ChatProvider component={OpenAIChatModel} model={model as any}>
+          {children}
+        </ChatProvider>
+      );
 
     case "openai":
       return (
-        <OpenAIChatModel model="gpt-4-1106-preview" temperature={0.4}>{children}</OpenAIChatModel>
+        <ChatProvider component={OpenAIChatModel} model={model as any}>
+          {children}
+        </ChatProvider>
       );
 
     case "open-router":
-      return <OpenRouter model={model}>{children}</OpenRouter>;
+      return (
+        <ChatProvider component={OpenAIChatModel} model={model as any}>
+          {children}
+        </ChatProvider>
+      );
 
     default:
       return <>{children}</>;

@@ -235,7 +235,7 @@ const Agent = async (
       teamContext.agentResults.push({
         id: agentRunId,
         role,
-        result: result,
+        result: result, // TODO: append context instead of replacing previously added results
         task: agentContext.tasks[task.id],
       });
     }

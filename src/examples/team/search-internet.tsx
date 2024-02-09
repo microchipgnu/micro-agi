@@ -17,24 +17,23 @@ const App = async () => {
         backstory="You are a professional internet search expert with years of experience in search engines and information retrieval."
         agentType="mrkl"
         // model="mistral"
-        model="gpt-4-1106-preview"
-        provider="openai"
-        // model="nousresearch/nous-hermes-2-mixtral-8x7b-dpo"
-        // provider="open-router"
+        // provider="ollama"
+        model="nousresearch/nous-hermes-2-mixtral-8x7b-dpo"
+        provider="open-router"
       >
         <Task tools={[searchInternetTool]}>
           Find links about Apple Vision Pro. Your final answer should contain a
           list of links and a summary of the content.
         </Task>
-        <Task tools={[writeFile]}>Get Internet Search Expert context and once you do and WRITE the links to a file.</Task>
       </Agent>
-      {/* <Agent
+      <Agent
         role="Writer"
         goal="Craft an engaging and informative article"
         backstory="You have a talent for making topics accessible and exciting to a broad audience.
         Your writing skills are essential in translating the expert knowledge into a captivating article."
         agentType="mrkl"
-        model="openhermes"
+        model="mistral"
+        provider="ollama"
         // model="nousresearch/nous-hermes-2-mixtral-8x7b-dpo"
         // provider="open-router"
       >
@@ -45,7 +44,7 @@ const App = async () => {
           topic.
         </Task>
         <Task tools={[writeFile]}>Get the current article. Write it to a file.</Task>
-      </Agent> */}
+      </Agent>
     </Team>
   );
 };
