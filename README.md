@@ -56,32 +56,48 @@ For pnpm users, use:
 pnpm install micro-agi
 ```
 
-### Creating an AI Agent Team
+### Your first AI Team
 
-With `micro-agi`, you can create a team of AI agents, each with specific roles and tasks. Here's a simple example to get you started:
+With `micro-agi`, you can create a team of AI agents, each with specific roles and tasks. 
+
+Here's a simple example to get you started:
 
 ```jsx
-/** @jsxImportSource ai-jsx/react */
-import * as AI from "ai-jsx/react";
-import Team from "micro-agi/core/components/team";
+/** @jsxImportSource ai-jsx */
+import * as AI from "ai-jsx";
 import Agent from "micro-agi/core/components/agent";
 import Task from "micro-agi/core/components/task";
+import Team from "micro-agi/core/components/team";
 
-function App() {
+const App = async ({ topic }: { topic: string }) => {
   return (
-    <AI.jsx>
-      <Team>
-        <Agent role="designer">
-          <Task>Design landing page</Task>
-        </Agent>
-        <Agent role="frontend developer">
-          <Task>Develop landing page with React and Tailwind</Task>
-          <Task>Publish to GitHub</Task>
-        </Agent>
-      </Team>
-    </AI.jsx>
+    <Team process="sequential">
+      <Agent
+        agentType="mrkl"
+        role="Writer"
+        goal="Write articles about a topic"
+        backstory="You are a very experienced writer. You've written thousands of article in your career."
+        model="mistral"
+        provider="ollama"
+      >
+        <Task
+          onStart={async () => {
+            console.log("Started writing article about", topic);
+          }}
+          onDone={async () => {
+            console.log("Done writing article about", topic);
+          }}
+        >
+          Write an article about {topic}. Your result in markdown format.
+        </Task>
+      </Agent>
+    </Team>
   );
-}
+};
 
-export default App;
+const renderContext = AI.createRenderContext();
+const result = await renderContext.render(<App topic="Apple" />);
+await Bun.write(`./result.json`, result);
 ```
+
+This is taken from [micro-agi-starter](https://github.com/microchipgnu/micro-agi-starter/tree/main) repo. Feel free to clone and run it locally against Ollama.
