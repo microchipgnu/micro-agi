@@ -11,14 +11,23 @@ export const TeamContext = AI.createContext({
 
 const SequentialTeam = async (
   { children }: { children?: AI.Node },
-  renderContext: AI.RenderContext
+  renderContext: AI.ComponentContext
 ): Promise<AI.Node> => {
   const teamContext = renderContext.getContext(TeamContext);
   const flattened = [children].flat(Infinity as 1);
 
+  const logger = renderContext.logger;
+
   for (let index = 0; index < flattened.length; index++) {
     const child = flattened[index] as any; // TODO: fix this
 
+    logger.debug({
+      type: "child",
+      value: { children: child, tag: child?.tag },
+    });
+
+    // TODO: if renderer is AI.JSX in react, child.tag will be undefined
+    // Need to think of an alternative way to do this
     if (child && child.tag === Agent) {
       await renderContext.render(child);
     } else if (child && child.tag === Parallel) {
@@ -28,9 +37,16 @@ const SequentialTeam = async (
         })
       );
     } else {
-      throw new Error("Agent not found");
+      await renderContext.render(child);
     }
   }
+
+  // TODO: this won't work well in React apps for now
+  // Converting circular structure to JSON
+  //   --> starting at object with constructor 'FiberRootNode'
+  //   |     property 'containerInfo' -> object with constructor 'HTMLDivElement'
+  //   |     property '__reactContainer$gl6rtz5ryp4' -> object with constructor 'FiberNode'
+  //   --- property 'stateNode' closes the circle
 
   return JSON.stringify(teamContext);
 };

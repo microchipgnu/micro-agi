@@ -163,8 +163,8 @@ const parseLlmResponse = async (response: string, render: any) => {
             const llmResponse = await render(
               <ChatCompletion>
                 <UserMessage>
-                  Correct the following JSON object and output the
-                  corrected JSON string only.
+                  Correct the following JSON object and output the corrected
+                  JSON string only.
                   {input}
                 </UserMessage>
               </ChatCompletion>
@@ -236,16 +236,17 @@ export const MrklAgent = async (
           {buildPrompt(_tools, role, goal, backstory)}
           {`Current task: ${task}\n`}
         </SystemMessage>
-        <UserMessage>
-          {scratchPad &&
-            `The SCRATCHPAD contains the context you're working with! I only see what you return as "${FINAL_ANSWER_PREFIX}"\nYou have ${
+        {scratchPad && (
+          <UserMessage>
+            {`The SCRATCHPAD contains the context you're working with! I only see what you return as "${FINAL_ANSWER_PREFIX}"\nYou have ${
               maxIterations - iteration
             } iterations left to provide a final answer.\n Here is the SCRATCHPAD:\n----
             """
             ${scratchPad}
             """
           `}
-        </UserMessage>
+          </UserMessage>
+        )}
       </ChatCompletion>
     );
 
