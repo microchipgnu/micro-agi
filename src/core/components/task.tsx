@@ -21,6 +21,13 @@ const Task = async (
   { render, getContext }: AI.ComponentContext
 ): Promise<AI.Node> => {
   const agentContext = getContext(AgentContext);
+
+  if (!agentContext) {
+    throw new Error(
+      "AgentContext not found. Make sure to place your Task inside an Agent component."
+    );
+  }
+
   agentContext.setEphemeralTools(tools);
 
   if (onStart) {

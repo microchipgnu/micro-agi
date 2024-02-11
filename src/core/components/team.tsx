@@ -16,13 +16,12 @@ const SequentialTeam = async (
   const teamContext = renderContext.getContext(TeamContext);
   const flattened = [children].flat(Infinity as 1);
 
-
   for (let index = 0; index < flattened.length; index++) {
-    const child = flattened[index] as any;
+    const child = flattened[index] as any; // TODO: fix this
 
-    if (child /*TODO: && child.tag === Agent*/) {
+    if (child && child.tag === Agent) {
       await renderContext.render(child);
-    } else if (child && child.tag === Parallel) { // TODO: Parallel won't work
+    } else if (child && child.tag === Parallel) {
       await Promise.all(
         child.props.children.map(async (child: any) => {
           return await renderContext.render(child);
@@ -52,6 +51,7 @@ const Team = async (
 
       for (let index = 0; index < flattened.length; index++) {
         const child = flattened[index] as any; // TODO: fix type
+
         if (child && child.tag === Agent) {
           agents.push(child);
         }

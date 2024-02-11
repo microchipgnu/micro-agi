@@ -52,6 +52,12 @@ const Agent = async (
 ): Promise<AI.Node> => {
   const teamContext = getContext(TeamContext);
 
+  if (!teamContext) {
+    throw new Error(
+      "TeamContext not found. Make sure to place your Agent inside a Team component."
+    );
+  }
+
   let agentContext = {
     tools: [
       {
@@ -61,6 +67,10 @@ const Agent = async (
           'a JSON structure that looks like { "role": "the role to ask for context about" }',
         validateInput: (input) => typeof input.role === "string",
         callback: async (input) => {
+          if (!input) {
+            throw new Error("No input provided");
+          }
+
           const teamContext = getContext(TeamContext);
           const role = input.role;
           const threshold = 80;

@@ -1,6 +1,6 @@
 {
   "name": "micro-agi",
-  "version": "0.0.0-alpha.20",
+  "version": "0.0.0-alpha.24",
   "type": "module",
   "license": "MIT",
   "module": "./src/index.js",
