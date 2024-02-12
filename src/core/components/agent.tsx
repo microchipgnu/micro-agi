@@ -12,6 +12,7 @@ import ModelSelector from "../models/model-selector.js";
 import Parallel from "../tasks/parallel.js";
 import { isSimilar } from "../utils/lavenshtein-distance.js";
 import { TeamContext } from "./team.js";
+import { buildPrompt } from "../prompts/mrkl-agent-prompts.js";
 
 interface Messages {
   [conversationId: string]: Message[];
@@ -60,6 +61,7 @@ const Agent = async (
 
   let agentContext = {
     tools: [
+      ...tools,
       {
         name: "agentGetContext",
         description: `Get the current context of a team member of this team. Available roles: ${teamContext.getAgents()} `,
@@ -68,7 +70,7 @@ const Agent = async (
         validateInput: (input) => typeof input.role === "string",
         callback: async (input) => {
           if (!input) {
-            throw new Error("No input provided");
+            return "No input provided"
           }
 
           const teamContext = getContext(TeamContext);
@@ -214,6 +216,15 @@ const Agent = async (
                   saveHistory: handleSaveHistory,
                 }}
               >
+                <SystemMessage>
+                  {buildPrompt(
+                    agentContext.getCurrentTools(),
+                    role,
+                    goal,
+                    backstory
+                  )}
+                </SystemMessage>
+                
                 {messages?.["conversation-1"]?.map((msg) => {
                   switch (msg.role) {
                     case "user":

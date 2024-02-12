@@ -2,7 +2,6 @@ import * as AI from "ai-jsx";
 import Agent from "../../core/components/agent.js";
 import Task from "../../core/components/task.js";
 import Team from "../../core/components/team.js";
-import { searchInternetTool } from "../../presets/tools/search-internet.js";
 
 const App = async () => {
   return (
@@ -13,7 +12,7 @@ const App = async () => {
         backstory="Recognized as a thought leader, I thrive on refining concepts into campaigns that resonate with audiences"
         agentType="mrkl"
       >
-        <Task tools={[searchInternetTool]}>
+        <Task>
         THIS IS A GREAT IDEA! Analyze and expand it 
         by conducting a comprehensive research.
     
@@ -37,7 +36,7 @@ const App = async () => {
         <Task>
           Create HTML code for a simple landing page. You don't need to open an
           IDE, simply output the website code, nothing more than that. Base your
-          code on the Business Analyst information
+          code on the Senior Idea Analyst information
         </Task>
       </Agent> */}
     </Team>

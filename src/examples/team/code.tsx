@@ -2,7 +2,6 @@ import * as AI from "ai-jsx";
 import Agent from "../../core/components/agent.js";
 import Task from "../../core/components/task.js";
 import Team from "../../core/components/team.js";
-import { Multimodal } from "../multimodal/index.js";
 import { askUser } from "../../presets/tools/index.js";
 
 const App = async () => {

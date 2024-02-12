@@ -7,6 +7,15 @@ import {
   UserMessage,
 } from "ai-jsx/core/completion";
 import { AgentContext } from "../components/agent.js";
+import {
+  ACTION_PREFIX,
+  ACTION_INPUT_PREFIX,
+  THOUGHT_PREFIX,
+  FINAL_ANSWER_PREFIX,
+  MAX_ITERATIONS_DEFAULT,
+  buildPrompt,
+  OBSERVATION_PREFIX,
+} from "../prompts/mrkl-agent-prompts.js";
 
 export interface Tool<Input = any, Output = any> {
   name: string;
@@ -31,53 +40,6 @@ interface ParsedLlmResponse {
   input: any;
   thoughts: string;
 }
-
-const ACTION_PREFIX = "Action:";
-const ACTION_INPUT_PREFIX = "Action Input:";
-const OBSERVATION_PREFIX = "Observation:";
-const FINAL_ANSWER_PREFIX = "Final Answer:";
-const THOUGHT_PREFIX = "Thought:";
-const MAX_ITERATIONS_DEFAULT = 100;
-
-const buildPrompt = (
-  tools: Tool[],
-  role = "assistant",
-  goal = "answer the question",
-  backstory = "no backstory"
-) => `
-You are ${role}.
-${backstory}
-
-Your personal goal is: ${goal}
-
-
-TOOLS:
-------
-You have access to the following tools:
-${tools.map((tool) => {
-  return `${tool.name} - ${tool.description} - for this tool input MUST be ${
-    tool.inputDescription ?? "null"
-  }\n`;
-})}
-
-Use the following format in your response:
-
-${THOUGHT_PREFIX} Do I need to use a tool? Yes
-${ACTION_PREFIX} the action to take, should be one of [${tools
-  .map((tool) => tool.name)
-  .join(",")}]
-${ACTION_INPUT_PREFIX} the input to the action
-${OBSERVATION_PREFIX} the result of the action
-
-... (this Thought/Action/Action Input/Observation can repeat N times)
-
-When you have a response for your task, or if you DO NOT need to use a tool, you MUST use the format:
-
-${THOUGHT_PREFIX} Do I need to use a tool? No
-${FINAL_ANSWER_PREFIX} the final answer to the original input question
-
-Begin! Solve the following tasks as best you can. This is VERY important to you, your job depends on it!
-`;
 
 const parseLlmResponseForTool = (response: string): ParsedLlmResponse => {
   const responseLines = response
@@ -164,8 +126,8 @@ const parseLlmResponse = async (response: string, render: any) => {
               <ChatCompletion>
                 <UserMessage>
                   Correct the following JSON object and output the corrected
-                  JSON string only.
-                  {input}
+                  JSON string only. Input: {input}
+                  Error: {`${error}`}
                 </UserMessage>
               </ChatCompletion>
             );
