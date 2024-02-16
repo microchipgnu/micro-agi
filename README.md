@@ -3,7 +3,7 @@
 ---
 
 
-**micro-agi** is an innovative **[React-compatible](/getting-started/why-jsx) cross-platform framework designed for building and orchestrating role-player AI autonomous agents** that works both in server or client applications.
+**micro-agi** is an innovative **[React-compatible](https://agi.microchipgnu.pt/getting-started/why-jsx) cross-platform framework designed for building and orchestrating role-player AI autonomous agents** that works both in server or client applications.
 
 
 With `micro-agi`, you can create complex systems of AI agents that work together to accomplish tasks. Here's a simple example
