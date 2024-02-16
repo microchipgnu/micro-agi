@@ -44,7 +44,7 @@ micro-agi works seamlessly with [AI.JSX](https://docs.ai-jsx.com), a framework f
 
 With `micro-agi`, you can create a team of AI agents, each with specific roles and tasks. 
 
-The following example is taken from [micro-agi-starter](https://github.com/microchipgnu/micro-agi-starter/tree/main) repo. Feel free to clone it and run it against [Ollama locally](/getting-started/providers#run-ollama).
+The following example is taken from [micro-agi-starter](https://github.com/microchipgnu/micro-agi-starter) repo. Feel free to clone it and run it against [Ollama locally](https://agi.microchipgnu.pt/getting-started/providers#ollama).
 
 Here's a simple example to get you started:
 
